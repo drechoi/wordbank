@@ -4,6 +4,7 @@ let DB = null;
 
 const TABLE = 'cats';
 
+// TODO: update it as a generic repository
 export default {
   async getDb() {
     return new Promise((resolve, reject) => {
