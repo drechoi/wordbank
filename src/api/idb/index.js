@@ -1,8 +1,12 @@
+import demoRepo from './DemoRepository/DummyImpl';
+
 const DB_NAME = 'testdb';
 const DB_VERSION = 1;
 let DB = null;
 
 const TABLE = 'cats';
+
+export const demoRepository = demoRepo;
 
 // TODO: update it as a generic repository
 export default {

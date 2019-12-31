@@ -6,7 +6,7 @@ import IDBDemo from './modules/idbDemo';
 
 Vue.use(Vuex);
 
-console.log('create new store?');
+// console.log('create new store?');
 
 export const store = new Vuex.Store({
   modules: {
