@@ -26,6 +26,8 @@ Vue.component('font-awesome-icon', FontAwesomeIcon);
 Vue.config.productionTip = false;
 Vue.prototype.$appName = 'Vue Template 01';
 
+console.log('--- main start ---');
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
