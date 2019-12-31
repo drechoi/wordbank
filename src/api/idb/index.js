@@ -1,4 +1,4 @@
-import demoRepo from './DemoRepository/DummyImpl.js';
+import demoRepo from './demoRepository/DummyImpl';
 
 const DB_NAME = 'testdb';
 const DB_VERSION = 1;
