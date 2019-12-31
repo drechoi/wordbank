@@ -3,6 +3,7 @@
 // we are also using it with karma-webpack
 //   https://github.com/webpack/karma-webpack
 
+require('fake-indexeddb/auto');
 var webpackConfig = require('../../build/webpack.test.conf');
 
 module.exports = function karmaConfig(config) {

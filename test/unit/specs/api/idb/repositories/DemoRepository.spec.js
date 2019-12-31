@@ -1,16 +1,12 @@
 import {demoRepository} from '@/api/idb/index';
 
 describe('DemoRepository', () => {
-  it('should show demo repository', () => {
+  it('should demo repository got all functions', () => {
     const repoFuncions = ['writeItem', 'getAllItems', 'deleteItem', 'resetDB'];
 
     repoFuncions.forEach(
       item => expect(demoRepository).to.respondTo(item)
     );
-    // // writeItem, getAllItems, deleteItem, resetDB
-    // expect(demoRepository).to.respondTo('writeItem');
-    // expect(demoRepository).to.respondTo('getAllItems');
-    // expect(demoRepository).to.respondTo('deleteItem');
   });
 
   it('should able to write new item', done => {
@@ -21,8 +17,6 @@ describe('DemoRepository', () => {
     ];
 
     demoRepository.resetDB();
-    // writeItem, getAllItems, deleteItem
-    // items.forEach(await DemoRepository.write);
     items.forEach(demoRepository.writeItem);
 
     const itemsFromRepo = demoRepository.getAllItems();

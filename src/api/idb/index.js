@@ -1,4 +1,5 @@
 import demoRepo from './demoRepository/DummyImpl';
+import catRepo from './catRepository';
 
 const DB_NAME = 'testdb';
 const DB_VERSION = 1;
@@ -9,7 +10,36 @@ const TABLE = 'cats';
 export const demoRepository = demoRepo;
 
 // TODO: update it as a generic repository
+
+export const getDbNew = async function() {
+  return new Promise((resolve, reject) => {
+    if (DB) {
+      return resolve(DB);
+    }
+
+    let request = window.indexedDB.open(DB_NAME, DB_VERSION);
+
+    request.onerror = e => {
+      console.log('[idb] Error opening db', e);
+      reject(Error('Error'));
+    };
+
+    request.onsuccess = e => {
+      DB = e.target.result;
+      resolve(DB);
+    };
+
+    request.onupgradeneeded = e => {
+      console.log('on upgrade needed');
+      let db = e.target.result;
+      db.createObjectStore(TABLE, { autoIncrement: true, keyPath: 'id' });
+    };
+  });
+};
+
 export default {
+  catRepo,
+  getDbNew,
   async getDb() {
     return new Promise((resolve, reject) => {
       if (DB) { return resolve(DB); }
@@ -17,7 +47,7 @@ export default {
       let request = window.indexedDB.open(DB_NAME, DB_VERSION);
 
       request.onerror = e => {
-        console.log('Error opening db', e);
+        console.log('[idb] Error opening db', e);
         reject(Error('Error'));
       };
 
@@ -27,65 +57,69 @@ export default {
       };
 
       request.onupgradeneeded = e => {
-        console.log('on upgrade needed');
+        console.log('[idb] on upgrade needed!');
+
+        // create all tables for the repositories
+        const tables = [TABLE];
         let db = e.target.result;
-        db.createObjectStore(TABLE, { autoIncrement: true, keyPath: 'id' });
+        tables.forEach(t => db.createObjectStore(t, { autoIncrement: true, keyPath: 'id' }));
+        // db.createObjectStore(TABLE, { autoIncrement: true, keyPath: 'id' });
       };
     });
   },
-  async getCats() {
-    let db = await this.getDb();
+  // async getCats() {
+  //   let db = await this.getDb();
 
-    return new Promise(resolve => {
-      let trans = db.transaction(TABLE, 'readonly');
-      trans.oncomplete = () => {
-        resolve(cats);
-      };
+  //   return new Promise(resolve => {
+  //     let trans = db.transaction(TABLE, 'readonly');
+  //     trans.oncomplete = () => {
+  //       resolve(cats);
+  //     };
 
-      let store = trans.objectStore(TABLE);
-      let cats = [];
+  //     let store = trans.objectStore(TABLE);
+  //     let cats = [];
 
-      store.openCursor().onsuccess = e => {
-        let cursor = e.target.result;
-        if (cursor) {
-          cats.push(cursor.value);
-          cursor.continue();
-        }
-      };
-    });
-  },
-  async saveCat(cat) {
-    const db = await this.getDb();
+  //     store.openCursor().onsuccess = e => {
+  //       let cursor = e.target.result;
+  //       if (cursor) {
+  //         cats.push(cursor.value);
+  //         cursor.continue();
+  //       }
+  //     };
+  //   });
+  // },
+  // async saveCat(cat) {
+  //   const db = await this.getDb();
 
-    return new Promise(resolve => {
-      console.log('DB save cat');
-      const trans = db.transaction(TABLE, 'readwrite');
-      trans.oncomplete = () => {
-        resolve();
-      };
-      const store = trans.objectStore(TABLE);
-      store.put(cat);
-    });
-  },
-  async deleteCat(cat) {
-    await this.deleteCatById(cat.id);
-  },
-  async deleteCatById(id) {
-    console.log('db - delete cat by id');
+  //   return new Promise(resolve => {
+  //     console.log('DB save cat');
+  //     const trans = db.transaction(TABLE, 'readwrite');
+  //     trans.oncomplete = () => {
+  //       resolve();
+  //     };
+  //     const store = trans.objectStore(TABLE);
+  //     store.put(cat);
+  //   });
+  // },
+  // async deleteCat(cat) {
+  //   await this.deleteCatById(cat.id);
+  // },
+  // async deleteCatById(id) {
+  //   console.log('db - delete cat by id');
 
-    const db = await this.getDb();
+  //   const db = await this.getDb();
 
-    return new Promise(resolve => {
-      console.log('db - promise');
-      const trans = db.transaction('cats', 'readwrite');
-      trans.oncomplete = () => {
-        console.log('db - resolve');
-        resolve();
-      };
+  //   return new Promise(resolve => {
+  //     console.log('db - promise');
+  //     const trans = db.transaction('cats', 'readwrite');
+  //     trans.oncomplete = () => {
+  //       console.log('db - resolve');
+  //       resolve();
+  //     };
 
-      console.log('db - delete ' + id);
-      const store = trans.objectStore('cats');
-      store.delete(id);
-    });
-  }
+  //     console.log('db - delete ' + id);
+  //     const store = trans.objectStore('cats');
+  //     store.delete(id);
+  //   });
+  // }
 };
