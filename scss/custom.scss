@@ -1,8 +1,18 @@
+// $theme-colors: (
+//   "primary": #00d974,
+//   "danger": #ff4136,
+//   "custom-color": #900
+// );
+
 $theme-colors: (
-  "primary": #00d974,
-  "danger": #ff4136,
+  "primary": #FCC0C5,
+  "secondary": #BF4C41,
   "custom-color": #900
 );
 
 @import '~bootstrap/scss/bootstrap.scss';
 @import '~bootstrap-vue/src/index.scss';
+
+// button {
+//   margin-bottom: 2rem;  
+// }

@@ -14,7 +14,7 @@ import NotFound from '@/views/NotFound';
 export default [
   { path: '/',
     name: 'Home',
-    component: Home
+    component: DebugView
   },
   {
     path: '/demo/AllUI',

@@ -1,36 +1,24 @@
 import Vue from 'vue';
 import Home from '@/views/HomeView';
 import BootstrapVue from 'bootstrap-vue';
-// import { shallowMount } from '@vue/test-utils';
+import { shallowMount } from '@vue/test-utils';
 
 // Install the authentication plugin here
 Vue.use(BootstrapVue);
 
 describe('Home.vue - Home View', () => {
+  const wrapper = shallowMount(Home);
   it('should render correct contents', () => {
-    const Constructor = Vue.extend(Home);
-    const vm = new Constructor().$mount();
-
-    console.log(vm.$el.querySelector('ul'));
-
-    console.log(vm.$el.querySelector('ul').innerHtml);
-
-    expect(vm.$el.querySelector('.ul').textContent)
-      .to.equal('Welcome to Your Vue.js App');
-
-    expect(vm.$el.querySelector('.hello h1').textContent)
-      .to.equal('Welcome to Your Vue.js App');
+    // which contains ..
+    // 1 header
+    expect(wrapper.find('h1').text()).to.equal('This is Home View');
+    // 2 profile information (if any) .. or new profile..
+    // 3 enter button .. existsing profile or profile list
+    expect(wrapper.find('button').text()).to.equal('Enter');
   });
-});
 
-describe('Home 2', () => {
-  // shallowMount(Home, {
-  //   propsData: {
-  //     maxStars: 6,
-  //     grade: 3
-  //   }
-  // });
-  // it('renders a list of stars with class `active` equal to prop.grade', () => {
-  //   expect(wrapper.findAll('.active').length).toEqual(3);
+  // it('render a list of all router path', () => {
+  //   wrapper.findAll('li').wrappers.forEach(w => console.log(w.html()));
+  //   expect(wrapper.findAll('li').length).to.equal(12);
   // });
 });
