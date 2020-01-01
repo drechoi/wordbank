@@ -27,7 +27,7 @@
             > Default
             </b-form-checkbox>
             <b-button block
-                      to="/"
+                      to="/Profile"
                       variant="secondary">Enter</b-button>
           </b-card-body>
         </b-card>
@@ -44,7 +44,7 @@
               class="mb-1"
             > Default
             </b-form-checkbox>
-            <b-button block to="/" variant="secondary">Create new profile</b-button>
+            <b-button block to="/Profile" variant="secondary">Create new profile</b-button>
           </b-card-body>
         </b-card>
       </b-card-group>

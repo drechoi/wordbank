@@ -3,8 +3,10 @@ import Home from '@/views/HomeView';
 import AllUI from '@/views/demo/AllUI';
 import StoreDemo from '@/views/demo/StoreDemo';
 import LocalDBDemo from '@/views/demo/DbStoreDemo';
+import LayoutDemo from '@/views/demo/LayoutDemo';
+
 import DebugView from '@/views/DebugView';
-import Profile from '@/views/Profile';
+import Profile from '@/views/Profile/index';
 import ShowData from '@/views/showData';
 import WishList from '@/views/wishList';
 import UserIndex from '@/views/UserIndex';
@@ -30,6 +32,11 @@ export default [
     path: '/demo/LocalDBDemo',
     name: 'Local DB Demo',
     component: LocalDBDemo
+  },
+  {
+    path: '/demo/LayoutDemo',
+    name: 'Layout Demo',
+    component: LayoutDemo
   },
   { path: '/home',
     name: 'Home - Real',
