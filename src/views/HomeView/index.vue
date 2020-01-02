@@ -19,7 +19,6 @@
             </b-dropdown>
             <b-form-checkbox
               id="checkbox-1"
-              v-model="status"
               name="checkbox-1"
               value="accepted"
               unchecked-value="not_accepted"
@@ -37,7 +36,6 @@
             <b-input placeholder="Enter a profile name" class="mb-1" />
             <b-form-checkbox
               id="checkbox-1"
-              v-model="status"
               name="checkbox-1"
               value="accepted"
               unchecked-value="not_accepted"

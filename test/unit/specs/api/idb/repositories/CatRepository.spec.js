@@ -1,10 +1,14 @@
-import allRepo from '@/api/idb/index';
+import allRepo, {getDb} from '@/api/idb';
 
-// require('fake-indexeddb/auto');
-
+let db;
 const catRepository = allRepo.catRepo;
 
 describe('Cat Repository', () => {
+  before(async function() {
+    // await someLongSetupFunction();
+    db = await getDb('catRepoSpec');
+  });
+
   it('should repository have all functions', () => {
     const repoFuncions = ['writeItem', 'getAllItems', 'deleteItem', 'resetDB'];
 
@@ -21,14 +25,13 @@ describe('Cat Repository', () => {
     ];
 
     // let itemsFromRepo = null;
-    catRepository.resetDB().then(
-      () => { return Promise.all(items.map(catRepository.writeItem)); }
+    catRepository.resetDB(db).then(
+      () => { return Promise.all(items.map(i => catRepository.writeItem(db, i))); }
     ).then(
-      () => { return catRepository.getAllItems(); }
+      () => { return catRepository.getAllItems(db); }
     ).then(
       (repo) => {
-        console.log('**[test] last step');
-        console.log('**[test Done]item repo length: %d', repo.length);
+        console.debug('**[test Done]item repo length: %d', repo.length);
         expect(repo.length).to.equal(3);
         expect(repo[0].text).to.equal('A');
         expect(repo[1].text).to.equal('B');
@@ -44,21 +47,20 @@ describe('Cat Repository', () => {
       { text: 'C' },
     ];
 
-    catRepository.resetDB().then(
-      () => { return Promise.all(items.map(catRepository.writeItem)); }
-    ).then(
-      () => { return catRepository.getAllItems(); }
-    ).then(
-      (itemList) => {
-        if (itemList.length > 2) return catRepository.deleteItem(itemList[1].id);
+    catRepository.resetDB(db).then(
+      () => {
+        return Promise.all(items.map(i => catRepository.writeItem(db, i)));
       }
     ).then(
-      () => { return catRepository.getAllItems(); }
+      (returnIds) => {
+        if (returnIds.length > 2) return catRepository.deleteItem(db, returnIds[1]);
+      }
+    ).then(
+      () => { return catRepository.getAllItems(db); }
     ).then(
       (itemList) => {
-        console.log('**[test] last step');
-        console.log(itemList);
-        console.log('test delete item repo length: %i', itemList.length);
+        console.debug('**[test] last step');
+        console.debug(itemList);
         expect(itemList.length).to.equal(2);
         expect(itemList[0].text).to.equal('A');
         expect(itemList[1].text).to.equal('C');

@@ -1,10 +1,43 @@
-import { getDbNew } from '../index';
-
+// import { getDb } from '../index';
 const TABLE = 'cats';
 
+const repo = (tableName) => {
+  return {
+    test: '',
+    getAllItems: db => {
+      // let db = await getDb();
+      if (!db) console.error('[cat repository] DB not available');
+
+      return new Promise((resolve, reject) => {
+        let trans = db.transaction(TABLE, 'readonly');
+        let store = trans.objectStore(TABLE);
+        let items = [];
+
+        trans.oncomplete = () => {
+          resolve(items);
+        };
+
+        trans.onerror = (err) => {
+          console.error('transaction error');
+          reject(err);
+        };
+
+        store.openCursor().onsuccess = e => {
+          let cursor = e.target.result;
+          if (cursor) {
+            items.push(cursor.value);
+            cursor.continue();
+          }
+        };
+      });
+    }
+  };
+};
+
 export default {
-  async getAllItems() {
-    let db = await getDbNew();
+  getAllItems: repo('cat').getAllItems,
+  getAllItems2(db) {
+    if (!db) console.error('[cat repository] DB not available');
 
     return new Promise((resolve, reject) => {
       let trans = db.transaction(TABLE, 'readonly');
@@ -16,7 +49,7 @@ export default {
       };
 
       trans.onerror = (err) => {
-        console.log('transaction error');
+        console.error('transaction error');
         reject(err);
       };
 
@@ -29,36 +62,38 @@ export default {
       };
     });
   },
-  async writeItem(cat) {
-    console.log('[cat repository] write item');
-    // const db = await getDbNew().catch(() => { console.log('oops!!!!'); });
-    const db = await getDbNew();
 
-    return new Promise(resolve => {
-      console.log('DB save cat');
+  writeItem(db, cat) {
+    console.debug('[cat repository] write item');
+
+    if (!db) console.error('[cat repository] DB not available');
+
+    return new Promise((resolve, reject) => {
+      console.debug('DB save cat');
       const trans = db.transaction(TABLE, 'readwrite');
-      trans.oncomplete = () => {
-        console.log('[cat repository] write item completed');
-        resolve();
-      };
       const store = trans.objectStore(TABLE);
-      store.put(cat);
+      const request = store.put(cat);
+
+      request.onsuccess = e => {
+        console.debug('[cat repository][write item] on request success');
+        resolve(e.target.result);
+      };
+      request.onerror = e => {
+        console.error('Error Adding: %s', e);
+        reject(e);
+      };
     });
   },
-  // async deleteItem(item) {
-  //   // await this.deleteCatById(cat.id);
-  //   let tmp = await this.getAllItems();
-  //   let tmp =tmp.filter(i => i.text === item.text);
-  //   deleteItemBy(id)
-  // },
-  async deleteItem(id) {
-    console.log('[cat repository] - delete cat by id');
-    const db = await getDbNew();
+
+  deleteItem(db, id) {
+    console.debug('[cat repository] - delete cat by id');
+    // const db = await getDb();
+    if (!db) console.error('[cat repository] DB not available');
 
     return new Promise(resolve => {
       const trans = db.transaction('cats', 'readwrite');
       trans.oncomplete = () => {
-        console.log('[cat repository] - delete done');
+        console.debug('[cat repository] - delete done');
         resolve();
       };
 
@@ -66,14 +101,16 @@ export default {
       store.delete(id);
     });
   },
-  async resetDB() {
-    console.log('[cat repository][reset] start');
-    const db = await getDbNew();
+
+  resetDB(db) {
+    console.debug('[cat repository][reset] start');
+    // const db = await getDb();
+    if (!db) console.error('[cat repository] DB not available');
 
     return new Promise(resolve => {
       const trans = db.transaction('cats', 'readwrite');
       trans.oncomplete = () => {
-        console.log('[cat repository][reset] done');
+        console.debug('[cat repository][reset] done');
         resolve();
       };
 

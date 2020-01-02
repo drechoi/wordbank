@@ -9,6 +9,15 @@
           <b-button @click="test01">increment</b-button>
         </p>
       </b-container>
+      <hr >
+      <b-container>
+        <h4>Some value 2</h4>
+        <p>
+          {{ $store.state.dummyInline.someValue }}
+          <b-button @click="test03">increment</b-button>
+        </p>
+      </b-container>
+      <hr >
       <b-container>
         <h4>Some List</h4>
         <ul>
@@ -47,6 +56,9 @@ export default {
     },
     test02: function() {
       this.$store.commit('addItem');
+    },
+    test03: function() {
+      this.$store.dispatch('inlineIncrement');
     }
   }
 };

@@ -6,10 +6,7 @@ export default {
   },
   mutations: {
     refreshCatList(state, cats) {
-      state.cats = [];
-      cats.forEach(c => {
-        state.cats.push(c);
-      });
+      state.cats = cats;
     }
   },
   actions: {

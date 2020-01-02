@@ -8,6 +8,7 @@
         <li>New Entry [tool bar + Modals]</li>
         <li>List all Entry [tool bar + link / button to another page]</li>
         <li>change profile [banned settings]</li>
+        <li>new profile [banned settings]</li>
       </ul>
     </p>
   </Layout>
