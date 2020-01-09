@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import wishModule from './modules/wishItem';
+// import wishModule from './modules/wishItem';
 import DummyModule from './modules/dummy';
 import IDBDemo from './modules/idbDemo';
 
@@ -10,7 +10,7 @@ Vue.use(Vuex);
 
 export const store = new Vuex.Store({
   modules: {
-    wish: wishModule,
+    // wish: wishModule,
     dummy: DummyModule,
     localDbDemo: IDBDemo,
     dummyInline: {
@@ -24,5 +24,6 @@ export const store = new Vuex.Store({
     dictionary: {
       state: { wordlist: [{ id: 0, name: 'profile 1' }, { id: 1, name: 'profile 2' }] },
     },
+
   }
 });

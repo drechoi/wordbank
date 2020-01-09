@@ -11,6 +11,8 @@ import BootstrapVue from 'bootstrap-vue';
 
 import '../scss/custom.scss';
 
+import ImageUploader from 'vue-image-upload-resize';
+
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faCoffee } from '@fortawesome/free-solid-svg-icons';
 library.add(faCoffee);
@@ -19,6 +21,9 @@ library.add(faCoffee);
 Vue.use(BootstrapVue);
 
 Vue.component('font-awesome-icon', FontAwesomeIcon);
+
+// Image uploader
+Vue.use(ImageUploader);
 
 Vue.config.productionTip = false;
 Vue.prototype.$appName = 'Vue Template 01';

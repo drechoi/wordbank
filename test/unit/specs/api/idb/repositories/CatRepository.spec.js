@@ -10,7 +10,7 @@ describe('Cat Repository', () => {
   });
 
   it('should repository have all functions', () => {
-    const repoFuncions = ['writeItem', 'getAllItems', 'deleteItem', 'resetDB'];
+    const repoFuncions = ['update', 'getAll', 'delete', 'reset'];
 
     repoFuncions.forEach(
       item => expect(catRepository).to.respondTo(item)
@@ -25,10 +25,10 @@ describe('Cat Repository', () => {
     ];
 
     // let itemsFromRepo = null;
-    catRepository.resetDB(db).then(
-      () => { return Promise.all(items.map(i => catRepository.writeItem(db, i))); }
+    catRepository.reset(db).then(
+      () => { return Promise.all(items.map(i => catRepository.update(db, i))); }
     ).then(
-      () => { return catRepository.getAllItems(db); }
+      () => { return catRepository.getAll(db); }
     ).then(
       (repo) => {
         console.debug('**[test Done]item repo length: %d', repo.length);
@@ -47,16 +47,16 @@ describe('Cat Repository', () => {
       { text: 'C' },
     ];
 
-    catRepository.resetDB(db).then(
+    catRepository.reset(db).then(
       () => {
-        return Promise.all(items.map(i => catRepository.writeItem(db, i)));
+        return Promise.all(items.map(i => catRepository.update(db, i)));
       }
     ).then(
       (returnIds) => {
-        if (returnIds.length > 2) return catRepository.deleteItem(db, returnIds[1]);
+        if (returnIds.length > 2) return catRepository.delete(db, returnIds[1]);
       }
     ).then(
-      () => { return catRepository.getAllItems(db); }
+      () => { return catRepository.getAll(db); }
     ).then(
       (itemList) => {
         console.debug('**[test] last step');

@@ -5,10 +5,12 @@ import StoreDemo from '@/views/demo/StoreDemo';
 import LocalDBDemo from '@/views/demo/DbStoreDemo';
 import LayoutDemo from '@/views/demo/LayoutDemo';
 
+import Profile from '@/views/Profile';
+import WordList from '@/views/Profile/WordList';
+
 import DebugView from '@/views/DebugView';
-import Profile from '@/views/Profile/index';
+
 import ShowData from '@/views/showData';
-import WishList from '@/views/wishList';
 import UserIndex from '@/views/UserIndex';
 import UserPage from '@/views/User';
 import NotFound from '@/views/NotFound';
@@ -17,6 +19,25 @@ export default [
   { path: '/',
     name: 'Home',
     component: DebugView
+  },
+  {
+    path: '/home',
+    name: 'Home - Real',
+    component: Home
+  },
+  { path: '/Debug',
+    name: 'Debug',
+    component: DebugView
+  },
+  {
+    path: '/profile',
+    name: 'profile',
+    component: Profile
+  },
+  {
+    path: '/wordlist',
+    name: 'Word List',
+    component: WordList
   },
   {
     path: '/demo/AllUI',
@@ -38,28 +59,10 @@ export default [
     name: 'Layout Demo',
     component: LayoutDemo
   },
-  { path: '/home',
-    name: 'Home - Real',
-    component: Home
-  },
-  { path: '/Debug',
-    name: 'Debug',
-    component: DebugView
-  },
-  {
-    path: '/profile',
-    name: 'profile',
-    component: Profile
-  },
   {
     path: '/showData',
     name: 'showData',
     component: ShowData
-  },
-  {
-    path: '/wishList',
-    name: 'wish List',
-    component: WishList
   },
   {
     path: '/user',

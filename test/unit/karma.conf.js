@@ -15,6 +15,11 @@ module.exports = function karmaConfig(config) {
     // browsers: ['PhantomJS'],
     browsers: ['ChromeHeadless'],
 
+    captureTimeout: 210000,
+    browserDisconnectTolerance: 3,
+    browserDisconnectTimeout: 210000,
+    browserNoActivityTimeout: 210000,
+
     // frameworks: ['mocha', 'sinon-chai', 'phantomjs-shim'],
     frameworks: ['mocha', 'sinon-chai'],
     reporters: ['spec', 'coverage'],
