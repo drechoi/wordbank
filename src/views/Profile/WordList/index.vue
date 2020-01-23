@@ -4,12 +4,12 @@
     <p v-for="(word, index) in words" :key="index">
       {{ word }}
     </p>
-      
+
     <tmp title="t1">test4</tmp>
     <b-modal
       id="add-word-modal"
+      ref="my-modal"
       title="Test"
-      ref="my-modal"      
       @show="test"
       @hidden="test"
       @ok="handleModelOk">
@@ -93,21 +93,21 @@ export default {
     },
     handleModelOk(e) {
       e.preventDefault();
-      
+
       // this.handleFormSubmit();
       console.log(this.$refs);
       console.log(this.$refs['my-modal']);
-      
+
       console.log(this.$refs['my-modal'].hide);
       this.$refs['my-modal'].hide();
-      //this.$refs['my-modal'].hide();
-              // Hide the modal manually
+      // this.$refs['my-modal'].hide();
+      // Hide the modal manually
       this.$nextTick(() => {
         console.log('next tick');
         // this.$refs.my-modal.hide();
         // this.hideModal();
         this.$refs['my-modal'].hide();
-      })
+      });
     },
     handleFormSubmit() {
       // 1. do validation
