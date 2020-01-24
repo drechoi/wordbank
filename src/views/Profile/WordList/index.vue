@@ -14,19 +14,25 @@
       @hidden="test"
       @ok="handleModelOk">
       <b-button block @click="hideModal">Close Me</b-button>
-      <b-form @submit.stop.prevent="handleFormSubmit">
+      <b-form ref="new-item-form" @submit.stop.prevent="handleFormSubmit">
         <b-form-group
           id="input-group-test-01"
+          :state="nameState"
           label="Input your Word"
-          label-for="input-test-01">
+          label-for="input-test-01"
+          invalid-feedback="Name is required" >
           <b-form-input
             id="input-test-01"
+            v-model="name"
+            :state="nameState"
             required
             placeholder="Enter something"/>
         </b-form-group>
       </b-form>
       <tmp>test 5</tmp>
+      <!--
       <new-word-form />
+    -->
     </b-modal>
   </Layout>
 </template>
@@ -45,7 +51,7 @@ Vue.component('tmp', {
     <b-form-group
       id="input-group-test-01"
       label="Input your Word"
-      label-for="input-test-01">
+      label-for="input-test-01" >
       <b-form-input
         id="input-test-01"
         required
@@ -67,7 +73,9 @@ export default {
         {id: 0, word: 'a', pic: ''},
         {id: 1, word: 'b', pic: ''},
         {id: 2, word: 'c', pic: ''},
-      ]
+      ],
+      nameState: null,
+      name
     };
   },
   validations: {
@@ -86,7 +94,10 @@ export default {
       console.log('test');
     },
     addWord(newWord) {
-      this.words = {...this.words, newWord};
+      // this.words = {...this.words, newWord};
+      this.words.push(
+        Object.freeze({id: 100, word: newWord, pic: ''})
+      );
     },
     hideModal() {
       this.$refs['my-modal'].hide();
@@ -94,7 +105,8 @@ export default {
     handleModelOk(e) {
       e.preventDefault();
 
-      // this.handleFormSubmit();
+      this.handleFormSubmit();
+      /*
       console.log(this.$refs);
       console.log(this.$refs['my-modal']);
 
@@ -107,17 +119,35 @@ export default {
         // this.$refs.my-modal.hide();
         // this.hideModal();
         this.$refs['my-modal'].hide();
-      });
+      });*/
     },
+    checkFormValidity() {
+      const valid = this.$refs["new-item-form"].checkValidity();;
+      this.nameState = valid;
+      return valid;
+      // return false;
+    },    
     handleFormSubmit() {
       // 1. do validation
       // 2. update store or data
       // 3. notify?
       // 4. close modal
-      alert('submit');
-      alert('modal hide');
-      this.$refs['my-modal'].hide();
-      alert('modal hide');
+            
+      // Exit when the form isn't valid
+      if (!this.checkFormValidity()) {        
+        return;
+      }
+
+      alert(this.name);
+      this.addWord(this.name);
+      //this.$refs['my-modal'].hide();
+      
+      this.$nextTick(() => {
+        console.log('next tick');
+        // this.$refs.my-modal.hide();
+        // this.hideModal();
+        this.$refs['my-modal'].hide();
+      });
     }
   }
 };
