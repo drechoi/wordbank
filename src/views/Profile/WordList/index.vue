@@ -1,24 +1,20 @@
 <template>
   <Layout title="index">
     <b-button v-b-modal.add-word-modal>Add new word</b-button>
-    <p v-for="(word, index) in words" :key="index">
-      {{ word }}
-    </p>
 
-    <tmp title="t1">test4</tmp>
+    <b-container>test</b-container>
+
+    <wordList :words="words"/>
     <b-modal
       id="add-word-modal"
       ref="my-modal"
       title="Test"
-      @show="test"
-      @hidden="test"
       @ok="handleModelOk">
-      <b-button block @click="hideModal">Close Me</b-button>
       <b-form ref="new-item-form" @submit.stop.prevent="handleFormSubmit">
         <b-form-group
           id="input-group-test-01"
           :state="nameState"
-          label="Input your Word"
+          label="Your new word"
           label-for="input-test-01"
           invalid-feedback="Name is required" >
           <b-form-input
@@ -26,10 +22,41 @@
             v-model="name"
             :state="nameState"
             required
-            placeholder="Enter something"/>
+            placeholder="New word"/>
+        </b-form-group>
+        <b-form-group
+          id="input-group-test-02"
+          :state="imgState"
+          required
+          invalid-feedback="An image is required" >
+          <image-uploader
+            :preview="true"
+            :class-name="['fileinput', { 'fileinput--loaded': hasImage }]"
+            :debug="1"
+            :auto-rotate="true"
+            :max-width="256"
+            capture="environment"
+            accept="image/*"
+            output-format="string"
+            @input="setImage"
+            @onUpload="beforeUploadImage"
+            @onComplete="afterUploadImage"
+          >
+            <div slot="upload-label">
+              <b-button>
+                <label for="fileInput">
+                  <font-awesome-icon icon="camera" />
+                  <span class="upload-caption">
+                    {{
+                      hasImage ? "Replace" : "Click to upload"
+                    }}
+                  </span>
+                </label>
+              </b-button>
+            </div>
+          </image-uploader>
         </b-form-group>
       </b-form>
-      <tmp>test 5</tmp>
       <!--
       <new-word-form />
     -->
@@ -38,33 +65,18 @@
 </template>
 
 <script>
-import Vue from 'vue';
+// import Vue from 'vue';
 import Layout from '../Layout';
 import newWordForm from './newWordForm';
 import { validationMixin } from 'vuelidate';
 import { required } from 'vuelidate/lib/validators';
-
-Vue.component('tmp', {
-  template: `
-    <div class="blog-post">
-  <b-form>
-    <b-form-group
-      id="input-group-test-01"
-      label="Input your Word"
-      label-for="input-test-01" >
-      <b-form-input
-        id="input-test-01"
-        required
-        placeholder="Enter something"/>
-    </b-form-group>
-  </b-form>      
-    </div>`,
-});
+import wordList from './wordlist';
 
 export default {
   components: {
     Layout,
     newWordForm,
+    wordList,
   },
   mixins: [validationMixin],
   data() {
@@ -75,80 +87,79 @@ export default {
         {id: 2, word: 'c', pic: ''},
       ],
       nameState: null,
-      name
+      imgState: null,
+      name,
+      hasImage: false,
+      image: null,
+      isLoading: false,
     };
   },
   validations: {
     form: {
-      food: {
-        required
-      },
       name: {
         required,
-        // minLength: minLength(3)
       }
     }
   },
   methods: {
-    test() {
-      console.log('test');
+    setImage: function(output) {
+      this.hasImage = true;
+      this.image = output;
     },
-    addWord(newWord) {
+    beforeUploadImage: e => {
+      this.isLoading = true;
+    },
+    afterUploadImage: e => {
+      this.isLoading = false;
+    },
+    addWord(newWord, img) {
       // this.words = {...this.words, newWord};
       this.words.push(
-        Object.freeze({id: 100, word: newWord, pic: ''})
+        Object.freeze({id: 100, word: newWord, pic: img})
       );
-    },
-    hideModal() {
-      this.$refs['my-modal'].hide();
     },
     handleModelOk(e) {
       e.preventDefault();
 
       this.handleFormSubmit();
-      /*
-      console.log(this.$refs);
-      console.log(this.$refs['my-modal']);
-
-      console.log(this.$refs['my-modal'].hide);
-      this.$refs['my-modal'].hide();
-      // this.$refs['my-modal'].hide();
-      // Hide the modal manually
-      this.$nextTick(() => {
-        console.log('next tick');
-        // this.$refs.my-modal.hide();
-        // this.hideModal();
-        this.$refs['my-modal'].hide();
-      });*/
     },
     checkFormValidity() {
-      const valid = this.$refs["new-item-form"].checkValidity();;
-      this.nameState = valid;
+      this.nameState = this.$refs['new-item-form'].checkValidity();
+
+      this.imgState = this.hasImage;
+
+      const valid = this.nameState && this.imgState;
+
       return valid;
-      // return false;
-    },    
+    },
     handleFormSubmit() {
       // 1. do validation
       // 2. update store or data
       // 3. notify?
       // 4. close modal
-            
+
       // Exit when the form isn't valid
-      if (!this.checkFormValidity()) {        
+      if (!this.checkFormValidity()) {
         return;
       }
 
-      alert(this.name);
-      this.addWord(this.name);
-      //this.$refs['my-modal'].hide();
-      
+      this.addWord(this.name, this.image);
+
       this.$nextTick(() => {
-        console.log('next tick');
-        // this.$refs.my-modal.hide();
-        // this.hideModal();
         this.$refs['my-modal'].hide();
       });
     }
   }
 };
 </script>
+
+<style>
+#fileInput {
+  display: none;
+}
+
+.img-preview {
+  display: block;
+  width: 128px;
+}
+</style>

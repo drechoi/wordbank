@@ -23,6 +23,9 @@
           lack of padding between the card's border and this gray <samp>&lt;div&gt;</samp>.
         </div>
       </b-card>
+      <h3>Icons</h3>
+      <font-awesome-icon icon="camera" />
+      <font-awesome-icon icon="coffee" />
     </b-container>
   </div>
 </template>

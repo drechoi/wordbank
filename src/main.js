@@ -13,9 +13,7 @@ import '../scss/custom.scss';
 
 import ImageUploader from 'vue-image-upload-resize';
 
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { faCoffee } from '@fortawesome/free-solid-svg-icons';
-library.add(faCoffee);
+require('@/api/icons.js');
 
 // Install the authentication plugin here
 Vue.use(BootstrapVue);
