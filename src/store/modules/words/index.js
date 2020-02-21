@@ -21,12 +21,12 @@ export default {
         }
       );
     },
-    addNewProfile({dispatch}, newWord) {
+    addWord({dispatch}, newWord) {
       idb.wordRepository.add(newWord).then(
         () => { dispatch('getWordList'); }
       );
     },
-    deleteProfile({dispatch}, id) {
+    deleteWord({dispatch}, id) {
       idb.wordRepository.delete(id).then(
         () => { dispatch('getWordList'); }
       );

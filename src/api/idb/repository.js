@@ -4,6 +4,8 @@ export default (tableName) => {
       // let db = await getDb();
       if (!db) console.error(`[repository] ${tableName}: DB not available`);
 
+      console.log(db);
+
       return new Promise((resolve, reject) => {
         let trans = db.transaction(tableName, 'readonly');
         let store = trans.objectStore(tableName);

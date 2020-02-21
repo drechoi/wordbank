@@ -9,7 +9,7 @@
         <b-nav-item>Setting</b-nav-item>
       </b-navbar-nav>
     </b-navbar>
-    <b-container class="m-3">
+    <b-container>
       <b-row>
         <b-col><b-link>Words of the day</b-link></b-col>
         <b-col><b-link>List all words</b-link></b-col>

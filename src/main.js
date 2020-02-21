@@ -13,6 +13,9 @@ import '../scss/custom.scss';
 
 import ImageUploader from 'vue-image-upload-resize';
 
+// firebase setup
+require('./api/firebase/firebaseConfig.js');
+
 require('@/api/icons.js');
 
 // Install the authentication plugin here
@@ -25,10 +28,9 @@ Vue.use(ImageUploader);
 
 Vue.config.productionTip = false;
 Vue.prototype.$appName = 'Vue Template 01';
-
-console.log('--- main start ---');
-
+console.log('--- starting App ---');
 /* eslint-disable no-new */
+
 new Vue({
   el: '#app',
   router,
@@ -36,3 +38,19 @@ new Vue({
   components: { App },
   template: '<App/>'
 });
+
+// let app;
+// console.log('--- main start with firebase ---');
+// firebase.auth.onAuthStateChanged(
+//   user => {
+//     if (!app) {
+//       app = new Vue({
+//         el: '#app',
+//         router,
+//         store,
+//         components: { App },
+//         template: '<App/>'
+//       });
+//     }
+//   }
+// );

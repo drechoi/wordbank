@@ -9,6 +9,7 @@ import Profile from '@/views/Profile';
 import WordList from '@/views/Profile/WordList';
 
 import DebugView from '@/views/DebugView';
+import Login from '@/views/Login';
 
 import ShowData from '@/views/showData';
 import UserIndex from '@/views/UserIndex';
@@ -29,10 +30,21 @@ export default [
     name: 'Debug',
     component: DebugView
   },
+  { path: '/DebugAuth',
+    name: 'DebugAuth',
+    component: DebugView
+  },
+  { path: '/Login',
+    name: 'Login',
+    component: Login
+  },
   {
     path: '/profile',
     name: 'profile',
-    component: Profile
+    component: Profile,
+    meta: {
+      requiresAuth: true
+    }
   },
   {
     path: '/wordlist',

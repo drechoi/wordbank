@@ -7,7 +7,6 @@ const DB_NAME = 'appdb';
 const DB_VERSION = 2;
 let DB = null;
 let dbNamespace = null;
-// const TABLE = 'cats';
 
 export const demoRepository = demoRepo;
 
