@@ -14,7 +14,7 @@ import '../scss/blackAndWhite.scss';
 import ImageUploader from 'vue-image-upload-resize';
 
 // firebase setup
-require('./api/firebase/firebaseConfig.js');
+import firebase from '@/api/firebase/firebaseConfig.js';
 
 require('@/api/icons.js');
 
@@ -30,6 +30,13 @@ Vue.config.productionTip = false;
 Vue.prototype.$appName = 'Vue Template 01';
 console.log('--- starting App ---');
 /* eslint-disable no-new */
+
+firebase.auth.onAuthStateChanged(user => {
+  if (user) {
+    store.commit('setCurrentUser', user);
+    store.dispatch('fetchUserProfile');
+  }
+});
 
 new Vue({
   el: '#app',

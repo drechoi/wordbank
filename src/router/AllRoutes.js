@@ -29,7 +29,7 @@ export default [
     name: 'Home - Real',
     component: Home
   },
-  { path: '/Debug',
+  { path: '/HomeDebug',
     name: 'HomeDebug',
     component: HomeDebug
   },

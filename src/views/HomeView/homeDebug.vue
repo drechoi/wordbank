@@ -10,16 +10,34 @@
         <li>add new</li>
         <li>remove</li>
       </ul>
-      active profile
+      <b-container>
+        [if no profile]
+        -> create new
+        <b-form-input v-model="newProfileName" placeholder="Enter new profile"></b-form-input>
+        <b-button @click="createNewProfile">Create new profile</b-button>
+        -> join request
+      </b-container>
+      <b-container>
+        active profile
+        {{ $store.state.auth.userProfile }}
+      </b-container>
+    <userCard :user="$store.state.auth.currentUser"/>
     </div>
-    <hr />
+    <hr >
     <div>
       <h1>Debug area</h1>
-      <p>data: {{dataDebug}}</p>
-      <p>computed: {{computedDebug}}</p>
+      <p>data: {{ dataDebug }}</p>
+      <p>is logged in: {{ computedDebug }}</p>
+
+      <b-button @click="resetDB">Reset DB</b-button>
+
+      <p>store: {{ $store.state.auth.currentUser }}</p>
+      <p>
+        <userCard :user="$store.state.auth.currentUser"/>
+      </p>
 
     </div>
-    <hr />
+    <hr >
     <b-container>
       <b-container>
         <h4>Some value</h4>
@@ -57,21 +75,25 @@
 </template>
 <script>
 import NavBar from '@/components/NavBar/navBarDebug';
+import userCard from '@/components/userCard';
 import firebase from 'firebase';
 
 export default {
   components: {
     NavBar,
+    userCard,
   },
   data() {
     return {
       pageTitle: '[page title]',
       listItems: this.$store.state.dummy.someList,
       dataDebug: '123213',
+      newProfileName: '',
     };
   },
-  computed:{
-    computedDebug: () => firebase.auth().currentUser !== null
+  computed: {
+    computedDebug: () => firebase.auth().currentUser !== null,
+    isLoggedIn: () => firebase.auth().currentUser !== null
   },
   methods: {
     test01: function() {
@@ -84,6 +106,12 @@ export default {
     },
     test03: function() {
       this.$store.dispatch('inlineIncrement');
+    },
+    resetDB: function() {
+      this.$store.dispatch('recreateUserProfile');
+    },
+    createNewProfile: function(){
+      this.$store.dispatch('createNewProfile', this.newProfileName);
     }
   }
 };

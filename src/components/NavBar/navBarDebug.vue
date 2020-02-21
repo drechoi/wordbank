@@ -36,13 +36,13 @@ export default {
       default: null,
     }
   },
-  computed: {
-    isAuthenticated: () => firebase.auth().currentUser !== null,
-  },
   data() {
     return {
 
     };
+  },
+  computed: {
+    isAuthenticated: () => firebase.auth().currentUser !== null,
   },
   methods: {
   }
