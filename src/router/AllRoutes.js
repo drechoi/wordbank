@@ -1,4 +1,6 @@
 import Home from '@/views/HomeView';
+import HomeDebug from '@/views/HomeView/homeDebug';
+
 // Demos
 import AllUI from '@/views/demo/AllUI';
 import StoreDemo from '@/views/demo/StoreDemo';
@@ -9,6 +11,7 @@ import Profile from '@/views/Profile';
 import WordList from '@/views/Profile/WordList';
 
 import DebugView from '@/views/DebugView';
+import LoginD from '@/views/Login/LoginDebug';
 import Login from '@/views/Login';
 
 import ShowData from '@/views/showData';
@@ -18,7 +21,7 @@ import NotFound from '@/views/NotFound';
 
 export default [
   { path: '/',
-    name: 'Home',
+    name: 'Root',
     component: DebugView
   },
   {
@@ -27,8 +30,8 @@ export default [
     component: Home
   },
   { path: '/Debug',
-    name: 'Debug',
-    component: DebugView
+    name: 'HomeDebug',
+    component: HomeDebug
   },
   { path: '/DebugAuth',
     name: 'DebugAuth',
@@ -37,6 +40,10 @@ export default [
   { path: '/Login',
     name: 'Login',
     component: Login
+  },
+  { path: '/LoginD',
+    name: 'LoginD',
+    component: LoginD
   },
   {
     path: '/profile',

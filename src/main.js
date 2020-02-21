@@ -9,7 +9,7 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 // Import the plugin here
 import BootstrapVue from 'bootstrap-vue';
 
-import '../scss/custom.scss';
+import '../scss/blackAndWhite.scss';
 
 import ImageUploader from 'vue-image-upload-resize';
 

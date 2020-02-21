@@ -10,14 +10,24 @@ const router = new Router({
   routes: allRoutes
 });
 
-router.beforeEach((to, from, next) => {
+function getCurrentUser(auth) {
+  return new Promise((resolve, reject) => {
+    const unsubscribe = auth.onAuthStateChanged(user => {
+      unsubscribe();
+      resolve(user);
+    }, reject);
+  });
+}
+
+router.beforeEach(async(to, from, next) => {
   const requiresAuth = to.matched.some(x => x.meta.requiresAuth);
-  const currentUser = firebase.auth().currentUser;
+  // const currentUser = await firebase.getCurrentUser();
+  const currentUser = await getCurrentUser(firebase.auth());
 
   if (requiresAuth && !currentUser) {
     next('/login');
-  } else if (requiresAuth && currentUser) {
-    next();
+  // } else if (requiresAuth && currentUser) {
+  //   next();
   } else {
     next();
   }

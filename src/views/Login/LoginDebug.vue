@@ -1,10 +1,9 @@
 <template>
-  <div>
-    <h1>login page</h1>
-    <p>blah blah blah</p>
-
-    <b-button @click="loginGoogle">Login with Google</b-button>
-    <b-button @click="loginFacebook">Login with Facebook</b-button>
+  <div class="content">
+    <h1>[App Title]</h1>
+    [Icon] <b-button @click="loginGoogle">Login with Google</b-button>
+    [Icon] <b-button @click="loginFacebook">Login with Facebook</b-button>
+    [Icon] <b-button @click="logout">Logout</b-button>
     {{ loginResponse }}
     <hr>
     <h1>Deug</h1>
@@ -44,12 +43,13 @@ export default {
       this.socialLogin(new firebase.auth.FacebookAuthProvider());
     },
     logout() {
-        firebase.auth.signOut().then(() => {
-            // this.$store.dispatch('clearData')
-            this.$router.push('/login')
-        }).catch(err => {
-            console.log(err);
-        })
+      firebase.auth().signOut().then(() => {
+        // this.$store.dispatch('clearData')
+        this.$router.push('/login');
+        this.$store.commit('setCurrentUser', null);
+      }).catch(err => {
+        console.log(err);
+      });
     },
     socialLogin(provider) {
       firebase.auth().signInWithPopup(provider).then(
@@ -88,3 +88,9 @@ export default {
 
 };
 </script>
+
+<style>
+.content {
+  text-align: center;
+}
+</style>

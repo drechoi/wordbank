@@ -1,36 +1,57 @@
-import idb from '@/api/idb';
+import firebase from 'firebase';
+
+function createUserProfile() {
+  return {
+    schemes: [],
+    defaultScheme: null,
+    settings: null,
+  };
+};
 
 export default {
   state: {
-    profiles: [],
-    defaultProfile: null,
-  },
-  mutations: {
-    refreshProfiles(state, newProfiles) {
-      state.profiles = newProfiles;
-    }
+    currentUser: null,
+    userProfile: {}
   },
   actions: {
-    getProfiles({commit}) {
-      idb.profiles.getAll().then(
-        (profiles) => {
-          commit('refreshProfiles', profiles);
-        },
-        (err) => {
-          console.log('failed to get profile');
-          console.log(err);
+    fetchUserProfile({commit, state}) {
+      if (!state.currentUser) {
+        throw new Error('Invalid state. fetch profile without user');
+      }
+
+      const db = firebase.firestore();
+      const usersCollection = db.collection('users');
+
+      usersCollection.doc(state.currentUser.uid).get().then(res => {
+        if (res.data()) {
+          commit('setUserProfile', res.data());
+        } else {
+          // create new user profile and save to DB
+          let userProfile = createUserProfile();
+
+          usersCollection.doc(state.currentUser.uid)
+            .set(userProfile)
+            .then(() => {
+              commit('setUserProfile', userProfile);
+            }).catch(err => {
+              console.error('failed to create new user profile');
+              console.error(err);
+              throw err;
+            });
         }
-      );
+      }).catch(err => {
+        console.error('failed to get user profile from DB');
+        console.error(err);
+        throw err;
+      });
+    }
+  },
+  mutations: {
+    setCurrentUser(state, val) {
+      state.currentUser = val;
     },
-    addNewProfile({dispatch}, newProfile) {
-      idb.profiles.add(newProfile).then(
-        () => { dispatch('getProfiles'); }
-      );
-    },
-    deleteProfile({dispatch}, profileId) {
-      idb.profiles.delete(profileId).then(
-        () => { dispatch('getProfiles'); }
-      );
-    },
+    setUserProfile(state, val) {
+      state.userProfile = val;
+    }
   }
 };
