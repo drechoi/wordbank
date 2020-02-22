@@ -33,7 +33,7 @@ console.log('--- starting App ---');
 
 firebase.auth.onAuthStateChanged(user => {
   if (user) {
-    store.commit('setCurrentUser', user);
+    store.commit('SET_CURRENT_USER', user);
     store.dispatch('fetchUserProfile');
   }
 });

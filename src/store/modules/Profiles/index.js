@@ -4,18 +4,11 @@ import firestore from '@/api/firebase/firebaseConfig';
 
 function createUserProfile() {
   return {
-    schemes: [],
+    schemes: null,
     defaultScheme: null,
     settings: null,
   };
 };
-
-// function createNewScheme(schemeName) {
-//   return {
-//     schemeName: schemeName,
-//     books: []
-//   };
-// };
 
 const usersCollection = firestore.usersCollection;
 // const schemesCollection = firestore.schemesCollection;
@@ -32,18 +25,13 @@ export default {
       }
 
       usersCollection.doc(state.currentUser.uid).get().then(res => {
-        if (res.data()) {
-          let userProfile = res.data();
-          commit('setUserProfile', userProfile);
-          console.log('fetch scheme after user profile');
-          // fetch default or first scheme
-          if (userProfile.defaultScheme) {
-            console.log('default');
-            dispatch('fetchScheme', userProfile.defaultScheme);
-          } else if (userProfile.schemes && userProfile.schemes.length > 0) {
-            console.log('fist item' + userProfile.schemes[0].schemeId);
-            dispatch('fetchScheme', userProfile.schemes[0].schemeId);
-          }
+        let userProfile = res.data();
+
+        if (userProfile) {
+          commit('SET_USER_PROFILE', userProfile);
+
+          // fetch defaultScheme
+          if (userProfile.defaultScheme) dispatch('fetchScheme', userProfile.defaultScheme);
         } else {
           // create new user profile and save to DB
           dispatch('createUserProfile');
@@ -60,20 +48,45 @@ export default {
       usersCollection.doc(state.currentUser.uid)
         .set(userProfile)
         .then(() => {
-          commit('setUserProfile', userProfile);
+          commit('SET_USER_PROFILE', userProfile);
         }).catch(err => {
           console.error('failed to create new user profile');
           console.error(err);
           throw err;
         });
     },
-    updateProfile({dispatch, state}, updates) {
-      usersCollection.doc(state.currentUser.uid)
-        .update(updates)
+    updateUserProfileSetDefaultScheme({dispatch, state}, schemeId) {
+      console.log('updateUserProfileSetDefaultScheme' + schemeId);
+      // update DB
+      usersCollection
+        .doc(state.currentUser.uid)
+        .update({ defaultScheme: schemeId })
         .then(() => {
-          console.log('user profile updated');
+          // reload profile
           dispatch('fetchUserProfile');
+        }).catch(err => {
+          console.log('failed to update user profile');
+          console.log(err);
         });
+    },
+    // updateSchemeRefInUserProfile({dispatch, state}, scheme) {
+    //   const itemKey = 'schemes.' + scheme.id;
+    //   const itemValue = {
+    //     schemeId: scheme.id,
+    //     schemeName: scheme.Name
+    //   };
+    //   console.log('updateSchemeRefInUserProfile' + itemKey);
+    //   usersCollection.doc(state.currentUser.uid).update({[itemKey]: itemValue});
+    // },
+
+    updateProfile({dispatch, state}, updates) {
+      alert('function [updateProfile] is obsoleted');
+      // usersCollection.doc(state.currentUser.uid)
+      //   .update(updates)
+      //   .then(() => {
+      //     console.log('user profile updated');
+      //     dispatch('fetchUserProfile');
+      //   });
     },
     // method for debug only...
     // normally the store will be created once user login
@@ -87,15 +100,15 @@ export default {
       usersCollection.doc(state.currentUser.uid)
         .set(userProfile)
         .then(() => {
-          commit('setUserProfile', userProfile);
+          commit('SET_USER_PROFILE', userProfile);
         });
     },
   },
   mutations: {
-    setCurrentUser(state, val) {
+    SET_CURRENT_USER(state, val) {
       state.currentUser = val;
     },
-    setUserProfile(state, val) {
+    SET_USER_PROFILE(state, val) {
       state.userProfile = val;
     }
   }

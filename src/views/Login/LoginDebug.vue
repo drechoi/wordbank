@@ -46,7 +46,7 @@ export default {
       firebase.auth().signOut().then(() => {
         // this.$store.dispatch('clearData')
         this.$router.push('/login');
-        this.$store.commit('setCurrentUser', null);
+        this.$store.commit('SET_CURRENT_USER', null);
       }).catch(err => {
         console.log(err);
       });
@@ -66,7 +66,7 @@ export default {
             token: token
           };
           // // update store
-          this.$store.commit('setCurrentUser', user);
+          this.$store.commit('SET_CURRENT_USER', user);
           this.$store.dispatch('fetchUserProfile');
           // // go to home
           this.store = this.$store.state.auth;

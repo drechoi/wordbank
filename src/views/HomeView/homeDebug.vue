@@ -12,9 +12,9 @@
         <li>remove</li>
       </ul>
       <b-container>
-        <div v-if="listSchemesName.length > 0">
+        <div v-if="$store.state.scheme.currentScheme">
           <h2>[current profile name][setting button]</h2>
-          {{$store.state.scheme}}
+          {{ $store.state.scheme }}
         </div>
         <div v-else>
           <b-card-group>
@@ -29,7 +29,7 @@
           </b-card-group>
         </div>
       </b-container>
-      <hr />
+      <hr >
       <b-container>
         [active profile]
         {{ $store.state.scheme.currentScheme }}
@@ -39,7 +39,7 @@
           <li>Switch book</li>
         </ul>
       </b-container>
-      <hr />
+      <hr >
       <b-container>
         [active book]
         - book info
@@ -48,17 +48,22 @@
         - history page
         - wish list page
       </b-container>
-      <hr />
+      <hr >
       <b-container>
         <em>Items in settings</em>
-         --- user profile settings page
-          - button add new profile
-          - set profile as default
-          <b-dropdown text="Switch Profile">
-            <b-dd-item v-for="(item, index) in listSchemesName" :key="index">{{item}}</b-dd-item>
-          </b-dropdown>
+        --- user profile settings page
+        - button add new profile
+        - set profile as default
+        <b-dropdown text="Switch Profile">
+          <b-dd-item v-for="(item, index) in listSchemesName" :key="index">{{ item }}</b-dd-item>
+        </b-dropdown>
 
-          - scheme setting page?
+        <b-card title="create A new profile">
+          <b-form-input v-model="newSchemeName" placeholder="Enter new profile"/>
+          <b-button @click="addNewScheme">Create new profile</b-button>
+        </b-card>
+
+        - scheme setting page?
       </b-container>
       <userCard :user="$store.state.auth.currentUser"/>
     </b-container>
@@ -67,7 +72,6 @@
       <h1>Debug area</h1>
       <p>data: {{ dataDebug }}</p>
       <p>is logged in: {{ computedDebug }}</p>
-
 
       <b-button @click="resetDB">Reset DB</b-button>
 
@@ -140,9 +144,7 @@ export default {
     computedDebug: () => firebase.auth().currentUser !== null,
     isLoggedIn: () => firebase.auth().currentUser !== null,
     listSchemesName() {
-      if(!this.$store.state.auth.userProfile.schemes) return [];
-
-      return this.$store.state.auth.userProfile.schemes.map(item => item.schemeName);
+      return [];
     }
   },
   methods: {
@@ -160,11 +162,20 @@ export default {
     resetDB() {
       this.$store.dispatch('recreateUserProfile');
     },
+    // this function is called when there is no avaiable scheme
+    // that means newly created one should be the default one
     addNewScheme() {
-      this.$store.dispatch('addNewScheme', this.newSchemeName);
+      this.$store.dispatch('createNewScheme',
+        {
+          owner: this.$store.state.auth.currentUser.uid,
+          schemeName: this.newSchemeName,
+          isDefault: true
+        });
     },
-    fetchScheme(){
+    fetchScheme() {
       this.$store.dispatch('fetchScheme', this.fetchSchemeId);
+    },
+    addDummyBook() {
 
     }
   }

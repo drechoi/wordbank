@@ -1,63 +1,57 @@
 <template>
   <div>
-    <b-navbar toggleable="md" type="dark" variant="secondary">
-      <b-navbar-brand to="/">
-        <b-img src="static/favicon.png" height="30" alt="icon" />
-        AppName
-      </b-navbar-brand>
-    </b-navbar>
-    <b-container class="m-3">
-      <b-card-group deck>
-        <b-card no-body>
-          <b-card-header>Existing Profile</b-card-header>
-          <b-card-body>
-            <b-dropdown text="--- Select profile ---"
-                        block
-                        variant="outline-secondary"
-                        class="mb-1">
-              <b-dropdown-item>existing profile</b-dropdown-item>
-            </b-dropdown>
-            <b-form-checkbox
-              id="checkbox-1"
-              name="checkbox-1"
-              value="accepted"
-              unchecked-value="not_accepted"
-              class="mb-1"
-            > Default
-            </b-form-checkbox>
-            <b-button block
-                      to="/Profile"
-                      variant="secondary">Enter</b-button>
-          </b-card-body>
-        </b-card>
-        <b-card no-body>
-          <b-card-header>Create New Profile</b-card-header>
-          <b-card-body>
-            <b-input placeholder="Enter a profile name" class="mb-1" />
-            <b-form-checkbox
-              id="checkbox-1"
-              name="checkbox-1"
-              value="accepted"
-              unchecked-value="not_accepted"
-              class="mb-1"
-            > Default
-            </b-form-checkbox>
-            <b-button block to="/Profile" variant="secondary">Create new profile</b-button>
-          </b-card-body>
-        </b-card>
-      </b-card-group>
+    <navBar :page-title="pageTitle" />
+    <b-container>
+      <div v-if="$store.state.scheme.currentScheme">
+        <h2>[current profile name][setting button]</h2>
+        book list
+        .. add new book (need to do it in settings? i think not)
+      </div>
+      <div v-else>
+        <p>No profile available - please create one or join one</p>
+        <b-card-group>
+          <b-card title="create A new profile">
+            <b-form-input v-model="newSchemeName" placeholder="Enter new profile"/>
+            <b-button @click="createScheme">Create new profile</b-button>
+          </b-card>
+          <b-card title="join other profile">
+            <b-form-input placeholder="Enter Profile Code"/>
+            <b-button>Join profile</b-button>
+          </b-card>
+        </b-card-group>
+      </div>
     </b-container>
   </div>
 </template>
 
 <script>
-import Router from '@/router/AllRoutes';
+import NavBar from '@/components/NavBar';
 
 export default {
+  components: {
+    NavBar
+  },
   data() {
     return {
-      routes: Router
+      pageTitle: 'Home',
+      newSchemeName: ''
     };
+  },
+  computed: {
+  },
+  methods: {
+    createScheme() {
+      if (this.newSchemeName !== '') {
+        const payload = {
+          owner: this.$store.state.auth.currentUser.uid,
+          schemeName: this.newSchemeName,
+          isDefault: true
+        };
+        this.$store.dispatch('createNewScheme', payload);
+      } else {
+        alert('please provide a name');
+      }
+    },
   }
 };
 </script>

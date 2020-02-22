@@ -1,10 +1,10 @@
 <template>
   <div class="content">
+    <b-alert v-model="showLoginError" variant="danger" dismissible>{{ loginError }}</b-alert>
     <h1>[App name]</h1>
     <div class="big_logo">[App big icon]</div>
     [icon] <b-button variant="outline-primary" @click="loginGoogle">Login with Google</b-button>
     [icon] <b-button variant="outline-primary" @click="loginFacebook">Login with Facebook</b-button>
-    <b-alert v-model="showLoginError" variant="danger" dismissible>{{ loginError }}</b-alert>
   </div>
 </template>
 

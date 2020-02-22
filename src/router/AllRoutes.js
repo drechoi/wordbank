@@ -8,6 +8,7 @@ import LocalDBDemo from '@/views/demo/DbStoreDemo';
 import LayoutDemo from '@/views/demo/LayoutDemo';
 
 import Profile from '@/views/Profile';
+import userSettings from '@/views/Profile/Settings';
 import WordList from '@/views/Profile/WordList';
 
 import DebugView from '@/views/DebugView';
@@ -27,7 +28,10 @@ export default [
   {
     path: '/home',
     name: 'Home - Real',
-    component: Home
+    component: Home,
+    meta: {
+      requiresAuth: true
+    }
   },
   { path: '/HomeDebug',
     name: 'HomeDebug',
@@ -44,6 +48,14 @@ export default [
   { path: '/LoginD',
     name: 'LoginD',
     component: LoginD
+  },
+  {
+    path: '/UserSettings',
+    name: 'UserSettings',
+    component: userSettings,
+    meta: {
+      requiresAuth: true
+    }
   },
   {
     path: '/profile',

@@ -15,7 +15,10 @@ const auth = firebase.auth();
 
 // // firebase collections
 const usersCollection = db.collection('users');
+// wanna change this to schemes
 const schemesCollection = db.collection('scheme');
+const booksCollection = db.collection('books');
+
 // const postsCollection = db.collection('posts');
 // const commentsCollection = db.collection('comments');
 // const likesCollection = db.collection('likes');
@@ -26,6 +29,7 @@ export default {
   // currentUser
   usersCollection,
   schemesCollection,
+  booksCollection,
 };
 //   auth,
 //   currentUser,
