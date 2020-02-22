@@ -1,9 +1,10 @@
 <template>
   <div>
     <navBar :page-title="pageTitle" />
-    <div>
+    <b-container>
       <h1>Profile</h1>
       <ul>
+        <li>Profile menu</li>
         <li>Current Profile</li>
         <li>rename</li>
         <li>Profile selection</li>
@@ -11,26 +12,67 @@
         <li>remove</li>
       </ul>
       <b-container>
-        [if no profile]
-        -> create new
-        <b-form-input v-model="newProfileName" placeholder="Enter new profile"></b-form-input>
-        <b-button @click="createNewProfile">Create new profile</b-button>
-        -> join request
+        <div v-if="listSchemesName.length > 0">
+          <h2>[current profile name][setting button]</h2>
+          {{$store.state.scheme}}
+        </div>
+        <div v-else>
+          <b-card-group>
+            <b-card title="create A new profile">
+              <b-form-input v-model="newSchemeName" placeholder="Enter new profile"/>
+              <b-button @click="addNewScheme">Create new profile</b-button>
+            </b-card>
+            <b-card title="join other profile">
+              <b-form-input placeholder="Enter Profile Code"/>
+              <b-button>Join profile</b-button>
+            </b-card>
+          </b-card-group>
+        </div>
       </b-container>
+      <hr />
       <b-container>
-        active profile
-        {{ $store.state.auth.userProfile }}
+        [active profile]
+        {{ $store.state.scheme.currentScheme }}
+        <ul>
+          <li>Add book if empty</li>
+          <li>Add Book</li>
+          <li>Switch book</li>
+        </ul>
       </b-container>
-    <userCard :user="$store.state.auth.currentUser"/>
-    </div>
+      <hr />
+      <b-container>
+        [active book]
+        - book info
+        - sticker page => add new sticker
+        - statistic page
+        - history page
+        - wish list page
+      </b-container>
+      <hr />
+      <b-container>
+        <em>Items in settings</em>
+         --- user profile settings page
+          - button add new profile
+          - set profile as default
+          <b-dropdown text="Switch Profile">
+            <b-dd-item v-for="(item, index) in listSchemesName" :key="index">{{item}}</b-dd-item>
+          </b-dropdown>
+
+          - scheme setting page?
+      </b-container>
+      <userCard :user="$store.state.auth.currentUser"/>
+    </b-container>
     <hr >
     <div>
       <h1>Debug area</h1>
       <p>data: {{ dataDebug }}</p>
       <p>is logged in: {{ computedDebug }}</p>
 
+
       <b-button @click="resetDB">Reset DB</b-button>
 
+      <b-form-input v-model="fetchSchemeId" placeholder="Enter Scheme ID"/>
+      <b-button @click="fetchScheme">Manual fetch scheme</b-button>
       <p>store: {{ $store.state.auth.currentUser }}</p>
       <p>
         <userCard :user="$store.state.auth.currentUser"/>
@@ -88,30 +130,42 @@ export default {
       pageTitle: '[page title]',
       listItems: this.$store.state.dummy.someList,
       dataDebug: '123213',
-      newProfileName: '',
+      newSchemeName: '',
+
+      fetchSchemeId: '',
+      tmpArray: ['12', '123123'],
     };
   },
   computed: {
     computedDebug: () => firebase.auth().currentUser !== null,
-    isLoggedIn: () => firebase.auth().currentUser !== null
+    isLoggedIn: () => firebase.auth().currentUser !== null,
+    listSchemesName() {
+      if(!this.$store.state.auth.userProfile.schemes) return [];
+
+      return this.$store.state.auth.userProfile.schemes.map(item => item.schemeName);
+    }
   },
   methods: {
-    test01: function() {
+    test01() {
       console.log('Commit increment');
       this.$store.commit('incrementValue');
       console.log('after Commit increment');
     },
-    test02: function() {
+    test02() {
       this.$store.commit('addItem');
     },
-    test03: function() {
+    test03() {
       this.$store.dispatch('inlineIncrement');
     },
-    resetDB: function() {
+    resetDB() {
       this.$store.dispatch('recreateUserProfile');
     },
-    createNewProfile: function(){
-      this.$store.dispatch('createNewProfile', this.newProfileName);
+    addNewScheme() {
+      this.$store.dispatch('addNewScheme', this.newSchemeName);
+    },
+    fetchScheme(){
+      this.$store.dispatch('fetchScheme', this.fetchSchemeId);
+
     }
   }
 };

@@ -19,7 +19,7 @@ export default {
   },
   data() {
     return {
-      mainProps: { blankColor: '#777', width: 75, height: 75, class: 'm1' }
+      mainProps: { blankColor: '#777', width: 25, height: 25, class: 'm1' }
     };
   }
 };

@@ -6,6 +6,7 @@ import IDBDemo from './modules/idbDemo';
 
 // import firebase from 'firebase';
 import profile from './modules/profiles';
+import scheme from './modules/scheme';
 // import auth from './modules/auth';
 
 Vue.use(Vuex);
@@ -29,6 +30,7 @@ export const store = new Vuex.Store({
       state: { wordlist: [{ id: 0, name: 'profile 1' }, { id: 1, name: 'profile 2' }] },
     },
     auth: profile,
+    scheme: scheme,
     // auth: {
     //   state: {
     //     currentUser: null,

@@ -1,4 +1,4 @@
-import firebase from 'firebase';
+// import firebase from 'firebase';
 import firestore from '@/api/firebase/firebaseConfig';
 // const firestore = require('@/api/firebase/firebaseConfig');
 
@@ -10,15 +10,15 @@ function createUserProfile() {
   };
 };
 
-function createNewScheme(schemeName) {
-  return {
-    schemeName: schemeName,
-    books: []
-  };
-};
+// function createNewScheme(schemeName) {
+//   return {
+//     schemeName: schemeName,
+//     books: []
+//   };
+// };
 
 const usersCollection = firestore.usersCollection;
-const schemesCollection = firestore.schemesCollection;
+// const schemesCollection = firestore.schemesCollection;
 
 export default {
   state: {
@@ -26,30 +26,27 @@ export default {
     userProfile: {}
   },
   actions: {
-    fetchUserProfile({commit, state}) {
+    fetchUserProfile({commit, dispatch, state}) {
       if (!state.currentUser) {
         throw new Error('Invalid state. fetch profile without user');
       }
 
-      // const db = firebase.firestore();
-      // const usersCollection = db.collection('users');
-
       usersCollection.doc(state.currentUser.uid).get().then(res => {
         if (res.data()) {
-          commit('setUserProfile', res.data());
+          let userProfile = res.data();
+          commit('setUserProfile', userProfile);
+          console.log('fetch scheme after user profile');
+          // fetch default or first scheme
+          if (userProfile.defaultScheme) {
+            console.log('default');
+            dispatch('fetchScheme', userProfile.defaultScheme);
+          } else if (userProfile.schemes && userProfile.schemes.length > 0) {
+            console.log('fist item' + userProfile.schemes[0].schemeId);
+            dispatch('fetchScheme', userProfile.schemes[0].schemeId);
+          }
         } else {
           // create new user profile and save to DB
-          let userProfile = createUserProfile();
-
-          usersCollection.doc(state.currentUser.uid)
-            .set(userProfile)
-            .then(() => {
-              commit('setUserProfile', userProfile);
-            }).catch(err => {
-              console.error('failed to create new user profile');
-              console.error(err);
-              throw err;
-            });
+          dispatch('createUserProfile');
         }
       }).catch(err => {
         console.error('failed to get user profile from DB');
@@ -57,28 +54,26 @@ export default {
         throw err;
       });
     },
-    createNewProfile({commit, dispatch, state}, newSchemeName) {
-      // alert('create new profile: ' + newProfileName);
-      // create new schemeProfile
-      let newScheme = createNewScheme(newSchemeName);
-      schemesCollection.add(newScheme)
-        .then((docRef) => {
-          console.log('Document written with ID: ', docRef.id);
-          newScheme.id = docRef.id;
+    createUserProfile({commit, state}) {
+      let userProfile = createUserProfile();
 
-          usersCollection.doc(state.currentUser.uid).update({
-            schemes: firebase.firestore.FieldValue.arrayUnion({
-              schemeId: docRef.id,
-              schemeName: newSchemeName
-            })
-          }).then(() => {
-            console.log('user profile updated');
-            dispatch('fetchUserProfile');
-          });
-
-          //
+      usersCollection.doc(state.currentUser.uid)
+        .set(userProfile)
+        .then(() => {
+          commit('setUserProfile', userProfile);
+        }).catch(err => {
+          console.error('failed to create new user profile');
+          console.error(err);
+          throw err;
         });
-      // add scheme to userProfile
+    },
+    updateProfile({dispatch, state}, updates) {
+      usersCollection.doc(state.currentUser.uid)
+        .update(updates)
+        .then(() => {
+          console.log('user profile updated');
+          dispatch('fetchUserProfile');
+        });
     },
     // method for debug only...
     // normally the store will be created once user login

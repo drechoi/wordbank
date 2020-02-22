@@ -13,6 +13,21 @@ $theme-colors: (
 @import '~bootstrap/scss/bootstrap.scss';
 @import '~bootstrap-vue/src/index.scss';
 
+
+// Add your custom variables here
+$dropdown-bg:                       $dark;
+$dropdown-link-color:               $light;
+
+input,
+button,
+select,
+optgroup,
+textarea {
+  margin-top: 0.2em;
+  margin-bottom: 0.2em;
+}
+
+
 // button {
 //   margin-bottom: 2rem;
 // }
