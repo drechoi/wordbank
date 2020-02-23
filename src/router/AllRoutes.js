@@ -8,6 +8,8 @@ import LocalDBDemo from '@/views/demo/DbStoreDemo';
 import LayoutDemo from '@/views/demo/LayoutDemo';
 
 import Profile from '@/views/Profile';
+import SchemeIndex from '@/views/Scheme';
+
 import userSettings from '@/views/Profile/Settings';
 import WordList from '@/views/Profile/WordList';
 
@@ -36,6 +38,11 @@ export default [
   { path: '/HomeDebug',
     name: 'HomeDebug',
     component: HomeDebug
+  },
+  {
+    path: '/Scheme',
+    name: 'SchemeView',
+    component: SchemeIndex
   },
   { path: '/DebugAuth',
     name: 'DebugAuth',

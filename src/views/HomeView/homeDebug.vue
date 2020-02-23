@@ -2,6 +2,13 @@
   <div>
     <navBar :page-title="pageTitle" />
     <b-container>
+      <h3>----- Debug Scheme -----</h3>
+      {{ $store.state.scheme }}
+      <h3>----- Debug Profile -----</h3>
+      {{ $store.state.auth.userProfile }}
+      <h3>----- End of Debug -----</h3>
+    </b-container>
+    <b-container>
       <h1>Profile</h1>
       <ul>
         <li>Profile menu</li>
@@ -11,6 +18,7 @@
         <li>add new</li>
         <li>remove</li>
       </ul>
+      <b-button @click="addDummyBook">Add Dummy Book</b-button>
       <b-container>
         <div v-if="$store.state.scheme.currentScheme">
           <h2>[current profile name][setting button]</h2>
@@ -176,7 +184,7 @@ export default {
       this.$store.dispatch('fetchScheme', this.fetchSchemeId);
     },
     addDummyBook() {
-
+      this.$store.dispatch('addDummyBook');
     }
   }
 };

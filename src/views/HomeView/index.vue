@@ -6,6 +6,11 @@
         <h2>[current profile name][setting button]</h2>
         book list
         .. add new book (need to do it in settings? i think not)
+        {{ $store.state.scheme.bookList }}
+        <b-container>
+          <h3>Current Book</h3>
+          {{ $store.state.book.currentBook }}
+        </b-container>
       </div>
       <div v-else>
         <p>No profile available - please create one or join one</p>

@@ -16,6 +16,7 @@ function _createNewScheme(owner, schemeName) {
 export default {
   state: {
     currentScheme: null,
+    booklist: []
   },
   actions: {
     /**
@@ -44,19 +45,25 @@ export default {
       alert('function [addNewScheme] is obsoleted');
     },
     fetchScheme({commit, state}, schemeId) {
+      console.log('fetch scheme: ' + schemeId);
       schemesCollection.doc(schemeId).get().then(res => {
         let scheme = res.data();
         if (scheme) {
+          // store current scheme
+          scheme.id = schemeId;
+          commit('SET_CUREENT_SCHEME', scheme);
+
           // get sub-collection and add to booklist
           schemesCollection.doc(schemeId).collection('booklist').get().then(
             booklist => {
-              scheme.books = booklist.docs
-                .map(item => ({
+              commit('SET_BOOK_LIST',
+                booklist.docs.map(item => ({
                   id: item.id,
                   ...item.data()
-                }));
-              commit('SET_CUREENT_SCHEME', scheme);
+                })));
             });
+        } else {
+          console.log('No such scheme - DB not sync? ' + schemeId);
         }
       }).catch(err => {
         console.error('unable to fetch scheme');
@@ -72,12 +79,21 @@ export default {
       schemesCollection.doc(schemeId).update(delta).then(
         () => dispatch('fetchScheme', schemeId)
       );
+    },
+    addDummyBook({state, dispatch}) {
+      const schemeId = state.currentScheme.id;
+      schemesCollection.doc(schemeId).collection('booklist').add({
+        name: 'this is a new dummy book'
+      }).then(() => dispatch('fetchScheme', schemeId))
+        .catch(err => alert('Oppps ' + err));
     }
   },
   mutations: {
     SET_CUREENT_SCHEME(state, value) {
-      console.log(value);
       state.currentScheme = value;
+    },
+    SET_BOOK_LIST(state, value) {
+      state.booklist = value;
     }
   }
 };

@@ -7,6 +7,7 @@ import IDBDemo from './modules/idbDemo';
 // import firebase from 'firebase';
 import profile from './modules/profiles';
 import scheme from './modules/scheme';
+import book from './modules/scheme/book';
 // import auth from './modules/auth';
 
 Vue.use(Vuex);
@@ -31,5 +32,6 @@ export const store = new Vuex.Store({
     },
     auth: profile,
     scheme: scheme,
+    book: book,
   }
 });

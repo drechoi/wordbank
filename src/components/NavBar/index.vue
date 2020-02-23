@@ -11,7 +11,7 @@
 
     <b-collapse id="nav_collapse" is-nav>
       <b-navbar-nav v-if="isAuthenticated">
-        <b-nav-item to="/Home" active-class="active" exact>Sticker Book</b-nav-item>
+        <b-nav-item to="/scheme" active-class="active" exact>Sticker Book</b-nav-item>
         <b-nav-item to="/Wordbank" active-class="active" exact>Word bank</b-nav-item>
         <b-nav-item-dropdown>
           <template v-slot:button-content>

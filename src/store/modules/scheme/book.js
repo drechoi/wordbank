@@ -39,7 +39,6 @@ export default {
         dispatch('updateScheme', change);
       });
       // update DB collections
-
     },
     r({state, commit}) {
       commit('openBook', createNewBook());

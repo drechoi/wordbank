@@ -22,17 +22,31 @@ function getCurrentUser(auth) {
 router.beforeEach(async(to, from, next) => {
   const requiresAuth = to.matched.some(x => x.meta.requiresAuth);
   // const currentUser = await firebase.getCurrentUser();
-  const currentUser = await getCurrentUser(firebase.auth());
-
-  if (requiresAuth && !currentUser) {
-    next('/login');
-  // } else if (requiresAuth && currentUser) {
-  //   next();
+  // const currentUser = await getCurrentUser(firebase.auth());
+  if (requiresAuth) {
+    getCurrentUser(firebase.auth()).then(
+      user => {
+        if (!user) {
+          next('/login');
+        } else {
+          next();
+        }
+      }
+    ).catch(
+      err => {
+        next(err);
+      }
+    );
   } else {
     next();
   }
+});
 
-  // return next();
+router.onError(err => {
+  console.error(err);
+
+  alert(err);
+  // go to error page
 });
 
 // Existing export
