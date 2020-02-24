@@ -5,6 +5,9 @@
       <h3>----- Debug Scheme -----</h3>
       {{ $store.state.scheme }}
       <h3>----- Debug Profile -----</h3>
+      {{ $store.state.auth }}
+      {{ $store.getters }}
+      {{ $store.getters.getCurrentUserId }}
       {{ $store.state.auth.userProfile }}
       <h3>----- End of Debug -----</h3>
     </b-container>
@@ -73,13 +76,13 @@
 
         - scheme setting page?
       </b-container>
-      <userCard :user="$store.state.auth.currentUser"/>
+      <userCard :user="$store.getters.getCurrentUser"/>
     </b-container>
     <hr >
     <div>
       <h1>Debug area</h1>
       <p>data: {{ dataDebug }}</p>
-      <p>is logged in: {{ computedDebug }}</p>
+      <p>is logged in: {{ isLoggedIn }}</p>
 
       <b-button @click="resetDB">Reset DB</b-button>
 
@@ -87,7 +90,7 @@
       <b-button @click="fetchScheme">Manual fetch scheme</b-button>
       <p>store: {{ $store.state.auth.currentUser }}</p>
       <p>
-        <userCard :user="$store.state.auth.currentUser"/>
+        <userCard :user="$store.getters.getCurrentUser"/>
       </p>
 
     </div>
@@ -130,7 +133,7 @@
 <script>
 import NavBar from '@/components/NavBar/navBarDebug';
 import userCard from '@/components/userCard';
-import firebase from 'firebase';
+// import firebase from 'firebase';
 
 export default {
   components: {
@@ -149,11 +152,9 @@ export default {
     };
   },
   computed: {
-    computedDebug: () => firebase.auth().currentUser !== null,
-    isLoggedIn: () => firebase.auth().currentUser !== null,
-    listSchemesName() {
-      return [];
-    }
+    isLoggedIn() { return this.$store.getters.getCurrentUser !== null; },
+    currentUser() { return this.$store.getters.getCurrentUser; },
+    listSchemesName() { return []; }
   },
   methods: {
     test01() {
@@ -173,9 +174,12 @@ export default {
     // this function is called when there is no avaiable scheme
     // that means newly created one should be the default one
     addNewScheme() {
+      console.log('store getter:');
+      console.log(this.$store);
+      console.log(this.$store.getters);
       this.$store.dispatch('createNewScheme',
         {
-          owner: this.$store.state.auth.currentUser.uid,
+          owner: this.$store.getters.getCurrentUser,
           schemeName: this.newSchemeName,
           isDefault: true
         });

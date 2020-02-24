@@ -6,7 +6,6 @@ const schemesCollection = firestore.schemesCollection;
 function _createNewScheme(owner, schemeName) {
   return {
     owner: owner,
-    users: [],
     schemeName: schemeName
     // subcollection ?
     // books: []
@@ -18,31 +17,44 @@ export default {
     currentScheme: null,
     booklist: []
   },
+  getters: {
+    getCurrentScheme: state => state.currentScheme,
+  },
   actions: {
     /**
      * owner: userId
      */
     createNewScheme({dispatch, commit}, payload) {
-      let newScheme = _createNewScheme(payload.owner, payload.schemeName);
-      console.log(newScheme);
-      schemesCollection
-        .add(newScheme)
-        .then(ref => {
-          console.log(ref);
-          if (payload.isDefault) {
-            dispatch('updateUserProfileSetDefaultScheme', ref.id);
-          } else {
-            // reload userProfile or reload the new scheme?
-            // dispatch('fetchUserProfile');
-            dispatch('fetchScheme', ref.id);
-          }
-        })
-        .catch(err => {
-          console.error(err);
-        });
-    },
-    addNewScheme({commit, dispatch, state}, schemeName) {
-      alert('function [addNewScheme] is obsoleted');
+      console.log('createNewScheme');
+      return new Promise(
+        (resolve, reject) => {
+          let newScheme = _createNewScheme(payload.owner, payload.schemeName);
+          console.log(newScheme);
+          schemesCollection
+            .add(newScheme)
+            .then(ref => {
+              console.log('addSchemeToUserProfile');
+              console.log(ref);
+              dispatch('addSchemeToUserProfile', ref);
+
+              if (payload.isDefault) {
+                dispatch('updateUserProfileSetDefaultScheme', ref.id)
+                  .then(resolve(ref.id))
+                  .catch(reject);
+              } else {
+                // reload userProfile or reload the new scheme?
+                // dispatch('fetchUserProfile');
+                dispatch('fetchScheme', ref.id)
+                  .then(resolve(ref.id))
+                  .catch(reject);
+              }
+            })
+            .catch(err => {
+              console.error(err);
+              reject(err);
+            });
+        }
+      );
     },
     fetchScheme({commit, state}, schemeId) {
       console.log('fetch scheme: ' + schemeId);

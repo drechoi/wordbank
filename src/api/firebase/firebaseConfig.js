@@ -5,6 +5,8 @@ import 'firebase/firestore';
 var config = process.env.FIREBASE_CONFIG;
 
 console.log('firebase config: ');
+console.log(process.env.FIREBASE_CONFIG);
+console.log(process.env);
 console.log(config);
 
 firebase.initializeApp(config);

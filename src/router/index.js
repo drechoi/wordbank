@@ -19,7 +19,7 @@ function getCurrentUser(auth) {
   });
 }
 
-router.beforeEach(async(to, from, next) => {
+router.beforeEach((to, from, next) => {
   const requiresAuth = to.matched.some(x => x.meta.requiresAuth);
   // const currentUser = await firebase.getCurrentUser();
   // const currentUser = await getCurrentUser(firebase.auth());

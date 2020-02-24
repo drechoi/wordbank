@@ -8,7 +8,8 @@ import LocalDBDemo from '@/views/demo/DbStoreDemo';
 import LayoutDemo from '@/views/demo/LayoutDemo';
 
 import Profile from '@/views/Profile';
-import SchemeIndex from '@/views/Scheme';
+import SchemeView from '@/views/Scheme/schemeView';
+import SchemeList from '@/views/Scheme/listView';
 
 import userSettings from '@/views/Profile/Settings';
 import WordList from '@/views/Profile/WordList';
@@ -40,9 +41,20 @@ export default [
     component: HomeDebug
   },
   {
+    path: '/Scheme/:id',
+    name: 'SchemeView',
+    component: SchemeView,
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
     path: '/Scheme',
     name: 'SchemeView',
-    component: SchemeIndex
+    component: SchemeList,
+    meta: {
+      requiresAuth: true
+    }
   },
   { path: '/DebugAuth',
     name: 'DebugAuth',
