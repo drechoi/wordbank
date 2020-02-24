@@ -1,4 +1,4 @@
-// import firebase from 'firebase';
+import firebase from 'firebase';
 import firestore from '@/api/firebase/firebaseConfig';
 // const firestore = require('@/api/firebase/firebaseConfig');
 
@@ -16,16 +16,35 @@ const usersCollection = firestore.usersCollection;
 export default {
   state: {
     currentUser: null,
-    userProfile: {}
+    userProfile: null,
+  },
+  getters: {
+    getCurrentUserId: state => state.currentUser ? state.currentUser.uid : null,
+    getCurrentUser: state => state.currentUser,
+    getUserProfile: state => state.userProfile,
   },
   actions: {
-    fetchUserProfile({commit, dispatch, state}) {
-      if (!state.currentUser) {
+    fetchUserProfile({commit, dispatch, getters, state}) {
+      if (!getters.getCurrentUser) {
         throw new Error('Invalid state. fetch profile without user');
       }
 
       usersCollection.doc(state.currentUser.uid).get().then(res => {
+        console.log('fetchUserProfile');
+        console.log(res);
+        console.log(res.data());
         let userProfile = res.data();
+        // little bit transformation coz schemes stored reference
+        userProfile.schemes = userProfile.schemes.map(scheme => {
+          console.log('scheme');
+
+          console.log(scheme);
+          console.log(scheme.data);
+          console.log(scheme.ref);
+          console.log(scheme.doc);
+          console.log(scheme.get);
+          return scheme.id;
+        });
 
         if (userProfile) {
           commit('SET_USER_PROFILE', userProfile);
@@ -56,37 +75,37 @@ export default {
         });
     },
     updateUserProfileSetDefaultScheme({dispatch, state}, schemeId) {
-      console.log('updateUserProfileSetDefaultScheme' + schemeId);
+      console.log('updateUserProfileSetDefaultScheme: ' + schemeId);
+
       // update DB
       usersCollection
         .doc(state.currentUser.uid)
         .update({ defaultScheme: schemeId })
         .then(() => {
           // reload profile
+
           dispatch('fetchUserProfile');
         }).catch(err => {
           console.log('failed to update user profile');
           console.log(err);
         });
     },
-    // updateSchemeRefInUserProfile({dispatch, state}, scheme) {
-    //   const itemKey = 'schemes.' + scheme.id;
-    //   const itemValue = {
-    //     schemeId: scheme.id,
-    //     schemeName: scheme.Name
-    //   };
-    //   console.log('updateSchemeRefInUserProfile' + itemKey);
-    //   usersCollection.doc(state.currentUser.uid).update({[itemKey]: itemValue});
-    // },
-
+    addSchemeToUserProfile({getters, dispatch}, schemeDocRef) {
+      console.log('addSchemeToUserProfile: ');
+      console.log(schemeDocRef);
+      return new Promise((resolve, reject) => {
+        usersCollection.doc(getters.getCurrentUserId)
+          .update({ schemes: firebase.firestore.FieldValue.arrayUnion(schemeDocRef) })
+          .then(docRef => {
+            dispatch('fetchUserProfile')
+              .then(resolve(docRef.id))
+              .catch(reject);
+          })
+          .catch(err => reject(err));
+      });
+    },
     updateProfile({dispatch, state}, updates) {
       alert('function [updateProfile] is obsoleted');
-      // usersCollection.doc(state.currentUser.uid)
-      //   .update(updates)
-      //   .then(() => {
-      //     console.log('user profile updated');
-      //     dispatch('fetchUserProfile');
-      //   });
     },
     // method for debug only...
     // normally the store will be created once user login
