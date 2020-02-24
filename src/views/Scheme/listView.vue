@@ -17,7 +17,7 @@
       <h2>Create and add new scheme to profile</h2>
 
       <b-input-group>
-        <b-input v-model="newSchemeName"></b-input>
+        <b-input v-model="newSchemeName" />
         <template v-slot:append>
           <b-button @click="addNewScheme">Add</b-button>
         </template>
@@ -49,13 +49,13 @@ export default {
   },
   methods: {
     addNewScheme() {
-      if(this.newSchemeName) {
+      if (this.newSchemeName) {
         this.$store.dispatch('createNewScheme',
-        {
-          owner: this.$store.getters.getCurrentUserId,
-          schemeName: this.newSchemeName,
-          isDefault: true
-        }).then(
+          {
+            owner: this.$store.getters.getCurrentUserId,
+            schemeName: this.newSchemeName,
+            isDefault: true
+          }).then(
           result => {
             console.log('scheme created');
             console.log(result);
