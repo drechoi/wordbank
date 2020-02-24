@@ -12,6 +12,7 @@ import SchemeIndex from '@/views/Scheme';
 import SchemeView from '@/views/Scheme/schemeView';
 import SchemeList from '@/views/Scheme/listView';
 
+import BookView from '@/views/Book/BookView';
 import BookList from '@/views/Book/BookList';
 
 import userSettings from '@/views/Profile/Settings';
@@ -69,6 +70,11 @@ export default [
     meta: {
       requiresAuth: true
     }
+  },
+  {
+    path: '/Book/:id',
+    name: 'BookView',
+    component: BookView,
   },
   {
     path: '/BookList',

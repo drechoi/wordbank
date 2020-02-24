@@ -19,7 +19,6 @@ $dropdown-bg:                       $dark;
 $dropdown-link-color:               $light;
 
 input,
-button,
 select,
 optgroup,
 textarea {
@@ -27,6 +26,13 @@ textarea {
   margin-bottom: 0.2em;
 }
 
+button {
+  margin: 0.2em;
+}
+
+a:hover{
+  text-decoration: none;
+}
 
 // button {
 //   margin-bottom: 2rem;

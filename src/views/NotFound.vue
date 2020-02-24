@@ -1,5 +1,16 @@
 <template>
-  <b-container>404 - Page Not Found</b-container>
+  <b-container>
+
+      <b-jumbotron header="Opps~ Page Not Found">
+        <ul>
+          <li>
+            <b-link to="/">Back to home</b-link>
+          </li>
+        </ul>
+
+      </b-jumbotron>
+
+  </b-container>
 </template>
 
 <script>

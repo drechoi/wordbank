@@ -14,15 +14,21 @@
           </b-card>
         </b-col>
         <b-col v-for="(book, index) in $store.getters.getAllBooks" :key="index">
-          <b-card>
-            <b-card-title>{{ book.data().name }}</b-card-title>
-            <b-card-sub-title>123</b-card-sub-title>
+          <b-link :to="`/book/${book.id}`">
+            <b-card>
+              <b-card-title>
+                [icon]
+                {{ book.data().name }}
+              </b-card-title>
 
-            <b-card-text>
-               <b-btn @click="visitBook(book.id)">Go</b-btn>
+              <b-card-sub-title>123</b-card-sub-title>
 
-            </b-card-text>
-          </b-card>
+              <b-card-text>
+                total number of ***
+                [small btn] for edit and delete
+              </b-card-text>
+            </b-card>
+          </b-link>
         </b-col>
       </b-row>
 
