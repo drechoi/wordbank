@@ -2,5 +2,5 @@
 
 module.exports = {
   FIREBASE_CONFIG: process.env.FIREBASE_CONFIG,
-  NODE_ENV: '"_Production_"'
+  NODE_ENV: '"production"'
 }

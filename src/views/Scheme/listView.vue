@@ -22,6 +22,15 @@
           <b-button @click="addNewScheme">Add</b-button>
         </template>
       </b-input-group>
+
+      <div>
+        <h2>Schemes</h2>
+        <div v-for="scheme in schemeList" :key="scheme">
+          <b-link :to="'/scheme/' + scheme">agr</b-link>
+          {{ scheme }}
+        </div>
+
+      </div>
     </b-container>
   </div>
 </template>
@@ -45,6 +54,20 @@ export default {
       console.log('computed 1');
       console.log(this.$store.getters.getUserProfile);
       return '?';
+    },
+    schemeList() {
+      const currentUser = this.$store.getters.getUserProfile;
+      return currentUser ? currentUser.schemes : [];
+    }
+  },
+  mounted() {
+    const userProfile = this.$store.getters.getUserProfile;
+    if (userProfile && userProfile.defaultScheme) {
+      console.log(this.$router);
+      console.log(this.$router.push);
+
+      this.$router.push(`/scheme/${userProfile.defaultScheme}`);
+      // this.$router.push({ path: 'scheme', query: { id: userProfile.defaultScheme } })
     }
   },
   methods: {

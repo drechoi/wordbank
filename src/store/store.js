@@ -1,20 +1,18 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-// import wishModule from './modules/wishItem';
+
+// vuex modules
 import DummyModule from './modules/dummy';
 import IDBDemo from './modules/idbDemo';
-
-// import firebase from 'firebase/app';
 import profile from './modules/profiles';
 import scheme from './modules/scheme';
+import schemex from './modules/scheme/schemex';
 import book from './modules/scheme/book';
-// import auth from './modules/auth';
 
 Vue.use(Vuex);
 
-// console.log('create new store?');
-
-export const store = new Vuex.Store({
+export default new Vuex.Store({
+  // plugins: [createLogger()]
   modules: {
     // wish: wishModule,
     dummy: DummyModule,
@@ -32,6 +30,8 @@ export const store = new Vuex.Store({
     },
     auth: profile,
     scheme: scheme,
+    schemex: schemex,
     book: book,
-  }
+  },
+  // strict: process.env.NODE_ENV !== 'production'
 });

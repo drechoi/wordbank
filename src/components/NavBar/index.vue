@@ -15,7 +15,7 @@
         <b-nav-item to="/Wordbank" active-class="active" exact>Word bank</b-nav-item>
         <b-nav-item-dropdown>
           <template v-slot:button-content>
-            <userCard :user="$store.state.auth.currentUser" style="display: inline-block"/>
+            <userCard :user="$store.getters.getCurrentUser" style="display: inline-block"/>
           </template>
           <b-dropdown-item to="UserSettings">Setting</b-dropdown-item>
           <b-dropdown-item>Logout</b-dropdown-item>

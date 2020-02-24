@@ -14,11 +14,17 @@ function _createNewScheme(owner, schemeName) {
 
 export default {
   state: {
+    // TODO: move this to local state
     currentScheme: null,
+    // TODO: move this to local state
     booklist: []
+    // here only store DB reference
   },
   getters: {
-    getCurrentScheme: state => state.currentScheme,
+    getCurrentScheme: state => {
+      alert('getCurrentScheme is Deprecated!');
+      return state.currentScheme;
+    },
   },
   actions: {
     /**
@@ -57,31 +63,38 @@ export default {
       );
     },
     fetchScheme({commit, state}, schemeId) {
-      console.log('fetch scheme: ' + schemeId);
-      schemesCollection.doc(schemeId).get().then(res => {
-        let scheme = res.data();
-        if (scheme) {
-          // store current scheme
-          scheme.id = schemeId;
-          commit('SET_CUREENT_SCHEME', scheme);
+      return new Promise((resolve, reject) => {
+        if (!schemesCollection) reject(Error('DB not connected'));
 
-          // get sub-collection and add to booklist
-          schemesCollection.doc(schemeId).collection('booklist').get().then(
-            booklist => {
-              commit('SET_BOOK_LIST',
-                booklist.docs.map(item => ({
-                  id: item.id,
-                  ...item.data()
-                })));
-            });
-        } else {
-          console.log('No such scheme - DB not sync? ' + schemeId);
-        }
-      }).catch(err => {
-        console.error('unable to fetch scheme');
-        console.error(err);
-        throw err;
+        schemesCollection.doc(schemeId).get().then(doc => {
+          resolve(doc.exists ? doc.data() : null);
+        }).catch(reject);
       });
+
+      // schemesCollection.doc(schemeId).get().then(res => {
+      //   let scheme = res.data();
+      //   if (scheme) {
+      //     // store current scheme
+      //     scheme.id = schemeId;
+      //     commit('SET_CUREENT_SCHEME', scheme);
+
+      //     // get sub-collection and add to booklist
+      //     schemesCollection.doc(schemeId).collection('booklist').get().then(
+      //       booklist => {
+      //         commit('SET_BOOK_LIST',
+      //           booklist.docs.map(item => ({
+      //             id: item.id,
+      //             ...item.data()
+      //           })));
+      //       });
+      //   } else {
+      //     console.log('No such scheme - DB not sync? ' + schemeId);
+      //   }
+      // }).catch(err => {
+      //   console.error('unable to fetch scheme');
+      //   console.error(err);
+      //   throw err;
+      // });
     },
     // is it too generic?
     updateScheme({dispatch, state}, delta) {
