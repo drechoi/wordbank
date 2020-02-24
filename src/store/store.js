@@ -4,7 +4,7 @@ import Vuex from 'vuex';
 import DummyModule from './modules/dummy';
 import IDBDemo from './modules/idbDemo';
 
-// import firebase from 'firebase';
+// import firebase from 'firebase/app';
 import profile from './modules/profiles';
 import scheme from './modules/scheme';
 import book from './modules/scheme/book';

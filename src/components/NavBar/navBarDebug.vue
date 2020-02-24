@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import firebase from 'firebase';
+import firebase from 'firebase/app';
 import userCard from '../userCard';
 
 export default {

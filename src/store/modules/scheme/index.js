@@ -1,4 +1,4 @@
-// import firebase from 'firebase';
+// import firebase from 'firebase/app';
 import firestore from '@/api/firebase/firebaseConfig';
 
 const schemesCollection = firestore.schemesCollection;
