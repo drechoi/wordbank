@@ -30,29 +30,14 @@ export default {
       }
 
       usersCollection.doc(state.currentUser.uid).get().then(res => {
-        console.log('fetchUserProfile');
-        console.log(res);
-        console.log(res.data());
-        let userProfile = res.data();
-        // little bit transformation coz schemes stored reference
-        userProfile.schemes = userProfile.schemes.map(scheme => {
-          console.log('scheme');
+        if (res.exists) {
+          let userProfile = res.data();
 
-          console.log(scheme);
-          console.log(scheme.data);
-          console.log(scheme.ref);
-          console.log(scheme.doc);
-          console.log(scheme.get);
-          return scheme.id;
-        });
+          // instead of DB reference, change it to id
+          userProfile.schemes = userProfile.schemes.map(scheme => { return scheme.id; });
 
-        if (userProfile) {
           commit('SET_USER_PROFILE', userProfile);
-
-          // fetch defaultScheme
-          if (userProfile.defaultScheme) dispatch('fetchScheme', userProfile.defaultScheme);
         } else {
-          // create new user profile and save to DB
           dispatch('createUserProfile');
         }
       }).catch(err => {

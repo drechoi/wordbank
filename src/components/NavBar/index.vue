@@ -11,13 +11,13 @@
 
     <b-collapse id="nav_collapse" is-nav>
       <b-navbar-nav v-if="isAuthenticated">
-        <b-nav-item to="/scheme" active-class="active" exact>Sticker Book</b-nav-item>
-        <b-nav-item to="/Wordbank" active-class="active" exact>Word bank</b-nav-item>
+        <b-nav-item to="/scheme" active-class="active" exact>Home</b-nav-item>
+        <b-nav-item to="/bookList" active-class="active" exact>All Books</b-nav-item>
         <b-nav-item-dropdown>
           <template v-slot:button-content>
             <userCard :user="$store.getters.getCurrentUser" style="display: inline-block"/>
           </template>
-          <b-dropdown-item to="UserSettings">Setting</b-dropdown-item>
+          <b-dropdown-item to="/UserSettings">Setting</b-dropdown-item>
           <b-dropdown-item>Logout</b-dropdown-item>
         </b-nav-item-dropdown>
       </b-navbar-nav>

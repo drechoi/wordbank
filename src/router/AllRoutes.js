@@ -8,8 +8,11 @@ import LocalDBDemo from '@/views/demo/DbStoreDemo';
 import LayoutDemo from '@/views/demo/LayoutDemo';
 
 import Profile from '@/views/Profile';
+import SchemeIndex from '@/views/Scheme';
 import SchemeView from '@/views/Scheme/schemeView';
 import SchemeList from '@/views/Scheme/listView';
+
+import BookList from '@/views/Book/BookList';
 
 import userSettings from '@/views/Profile/Settings';
 import WordList from '@/views/Profile/WordList';
@@ -26,7 +29,10 @@ import NotFound from '@/views/NotFound';
 export default [
   { path: '/',
     name: 'Root',
-    component: DebugView
+    component: DebugView,
+    meta: {
+      skipAuth: true
+    }
   },
   {
     path: '/home',
@@ -41,6 +47,14 @@ export default [
     component: HomeDebug
   },
   {
+    path: '/Scheme/all/',
+    name: 'SchemeList',
+    component: SchemeList,
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
     path: '/Scheme/:id',
     name: 'SchemeView',
     component: SchemeView,
@@ -50,11 +64,16 @@ export default [
   },
   {
     path: '/Scheme',
-    name: 'SchemeView',
-    component: SchemeList,
+    name: 'SchemeIndex',
+    component: SchemeIndex,
     meta: {
       requiresAuth: true
     }
+  },
+  {
+    path: '/BookList',
+    name: 'BookList',
+    component: BookList,
   },
   { path: '/DebugAuth',
     name: 'DebugAuth',
@@ -62,11 +81,17 @@ export default [
   },
   { path: '/Login',
     name: 'Login',
-    component: Login
+    component: Login,
+    meta: {
+      skipAuth: true
+    }
   },
   { path: '/LoginD',
     name: 'LoginD',
-    component: LoginD
+    component: LoginD,
+    meta: {
+      skipAuth: true
+    }
   },
   {
     path: '/UserSettings',
@@ -127,6 +152,9 @@ export default [
   {
     path: '*',
     name: 'Not found',
-    component: NotFound
+    component: NotFound,
+    meta: {
+      skipAuth: true
+    }
   }
 ];

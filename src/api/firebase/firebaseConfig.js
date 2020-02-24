@@ -18,6 +18,7 @@ const auth = firebase.auth();
 
 const usersCollection = db.collection('users');
 const schemesCollection = db.collection('scheme');
+// this is subcollection.. dont hurt yourself
 const booksCollection = db.collection('books');
 
 export default {

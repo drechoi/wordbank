@@ -20,10 +20,12 @@ function getCurrentUser(auth) {
 }
 
 router.beforeEach((to, from, next) => {
-  const requiresAuth = to.matched.some(x => x.meta.requiresAuth);
-  // const currentUser = await firebase.getCurrentUser();
-  // const currentUser = await getCurrentUser(firebase.auth());
-  if (requiresAuth) {
+  const skipAuth = to.matched.some(x => x.meta.skipAuth);
+
+  // const requiresAuth = to.matched.some(x => x.meta.requiresAuth);
+  if (skipAuth) {
+    next();
+  } else {
     getCurrentUser(firebase.auth()).then(
       user => {
         if (!user) {
@@ -37,8 +39,6 @@ router.beforeEach((to, from, next) => {
         next(err);
       }
     );
-  } else {
-    next();
   }
 });
 

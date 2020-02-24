@@ -14,15 +14,11 @@ function _createNewScheme(owner, schemeName) {
 
 export default {
   state: {
-    // TODO: move this to local state
     currentScheme: null,
-    // TODO: move this to local state
     booklist: []
-    // here only store DB reference
   },
   getters: {
     getCurrentScheme: state => {
-      alert('getCurrentScheme is Deprecated!');
       return state.currentScheme;
     },
   },
@@ -67,7 +63,14 @@ export default {
         if (!schemesCollection) reject(Error('DB not connected'));
 
         schemesCollection.doc(schemeId).get().then(doc => {
-          resolve(doc.exists ? doc.data() : null);
+          if (doc.exists) {
+            let scheme = doc.data();
+            scheme.id = schemeId;
+            commit('SET_CUREENT_SCHEME', scheme);
+            resolve(doc.data());
+          } else {
+            resolve(null);
+          }
         }).catch(reject);
       });
 

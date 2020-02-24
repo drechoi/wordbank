@@ -23,6 +23,11 @@ export default {
     ...mapState(['currentUser']),
     showLoginError: { get() { return this.loginError !== ''; } }
   },
+  mounted() {
+    if (this.$store.getters.getCurrentUser) {
+      this.$router.push('/home');
+    }
+  },
   methods: {
     loginGoogle() {
       this.socialLogin(new firebase.auth.GoogleAuthProvider());
