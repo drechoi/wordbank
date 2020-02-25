@@ -7,7 +7,7 @@
           <b-button disabled><font-awesome-icon icon="star" /> Achieve</b-button>
           <b-button disabled><font-awesome-icon icon="tasks" /> Add a task</b-button>
           <b-button><font-awesome-icon icon="gift" /> make a wish</b-button>
-          <b-button :to="`book/${bookId}/settings`"><font-awesome-icon icon="cog" /> Settings</b-button>
+          <b-button :to="`/book/${$route.params.id}/settings`"><font-awesome-icon icon="cog" /> Settings</b-button>
         </b-button-group>
       </b-container>
 
@@ -28,7 +28,7 @@
         <b-col>
           <b-card no-body class="mt-1">
             <b-card-header>
-              <b-link><h5><font-awesome-icon icon="star" /> Achievements</h5></b-link>
+              <b-link><h5><font-awesome-icon icon="star" /> Achievements [MVP]</h5></b-link>
 
             </b-card-header>
             <p class="mt-5 mb-5">
@@ -45,27 +45,38 @@
           </b-card>
         </b-col>
         <b-col>
-          <b-container class="book-info border border-primary rounded mt-1 mb-1">
-            [task view]
-            [name]
-            [description]
-            [task type - one off / daily]
-            [reward]
-            [asssigned by]
-            [expiry]
-            [status]
-          </b-container>
+          <b-card no-body class="mt-1">
+            <b-card-header>
+              <b-link><h5><font-awesome-icon icon="tasks" /> Tasks (Coming soon)</h5></b-link>
+            </b-card-header>
+            <p class="mt-5 mb-5">
+              [WIP]
+              [task view]
+              [name]
+              [description]
+              [task type - one off / daily]
+              [reward]
+              [asssigned by]
+              [expiry]
+              [status]
+            </p>
+          </b-card>
         </b-col>
         <b-col>
-          <b-container class="book-info border border-primary rounded mt-1 mb-1">
-            [wish list]
-            [name]
-            [description]
-            [timestamp]
-            [suggested price]
-            [assigned price]
-
-          </b-container>
+          <b-card no-body class="mt-1">
+            <b-card-header>
+              <b-link><h5><font-awesome-icon icon="tasks" /> Wishes (MVP)</h5></b-link>
+            </b-card-header>
+            <p class="mt-5 mb-5">
+              [wish list]
+              [name]
+              [description]
+              [timestamp]
+              [suggested price]
+              [assigned price]
+              [status]
+            </p>
+          </b-card>
         </b-col>
         <b-col>
           <b-container class="book-info border border-primary rounded mt-1 mb-1">
@@ -88,8 +99,17 @@ import navBar from '@/components/NavBar';
 
 export default {
   components: {
-    navBar
-  }
+    navBar,
+    bookId: null
+  },
+  mounted() {
+    // load the book
+    // fetch book?
+
+    const bookId = this.$route.params.id;
+    console.log(bookId);
+  },
+
 };
 </script>
 

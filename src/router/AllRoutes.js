@@ -14,6 +14,7 @@ import SchemeList from '@/views/Scheme/listView';
 
 import BookView from '@/views/Book/BookView';
 import BookList from '@/views/Book/BookList';
+import BookSettings from '@/views/Book/Setting';
 
 import userSettings from '@/views/Profile/Settings';
 import WordList from '@/views/Profile/WordList';
@@ -80,6 +81,19 @@ export default [
     path: '/BookList',
     name: 'BookList',
     component: BookList,
+  },
+  {
+    path: '/Book/:id/settings',
+    name: 'BookSettings',
+    component: BookSettings,
+    meta: {
+      // is not that working ... solve it later
+      breadcrumb: [
+        { text: 'Scheme', href: '/Scheme' },
+        { text: 'Book', href: '/Book' },
+        { text: 'Settings', active: true }
+      ]
+    }
   },
   { path: '/DebugAuth',
     name: 'DebugAuth',

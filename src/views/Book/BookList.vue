@@ -1,7 +1,10 @@
 <template>
   <div>
     <navBar :page-title="pageTitle" />
-    <b-container>
+    <b-container v-if="isLoading">
+      <b-spinner label="Loading"/>
+    </b-container>
+    <b-container v-else>
       [ ... some scheme menu ... ]
       this is book list
       {{ $store.getters.getCurrentScheme }}
@@ -10,36 +13,36 @@
         <b-col>
           <b-card title="Add new book">
             <b-card-text> could go add book page or just a simple name box </b-card-text>
-            <b-button @click="addNewBook" size="lg"><font-awesome-icon icon="plus" /> Add</b-button>
+            <b-button size="lg" @click="addNewBook"><font-awesome-icon icon="plus" /> Add</b-button>
 
           </b-card>
         </b-col>
         <b-col v-for="(book, index) in $store.getters.getAllBooks" :key="index">
 
-            <b-card no-body>
-              <b-link :to="`/book/${book.id}`">
-              <b-card-title>
-                [icon]
-                {{ book.data().name }}
-              </b-card-title>
+          <b-card no-body class="mt-1">
+            <b-link :to="`/book/${book.id}`">
+              <b-card-header>
+                <b-card-title>
+                  <font-awesome-icon icon="address-book" />
+                  {{ book.data().name }}
+                </b-card-title>
+              </b-card-header>
 
               <b-card-body>
-
                 <b-card-sub-title>123</b-card-sub-title>
                 <b-card-text>
                   total number of ***
                   [small btn] for edit and delete
-
                 </b-card-text>
               </b-card-body>
-              </b-link>
+            </b-link>
 
-              <b-card-footer align="right">
-                <b-button size="sm"><font-awesome-icon icon="eye" /></b-button>
-                <b-button size="sm"><font-awesome-icon icon="cog" /></b-button>
-                <b-button size="sm"><font-awesome-icon icon="trash" /></b-button>
-              </b-card-footer>
-            </b-card>
+            <b-card-footer align="right">
+              <b-button size="sm" :to="`/book/${book.id}`"><font-awesome-icon icon="eye" /></b-button>
+              <b-button size="sm" :to="`/book/${book.id}/settings`"><font-awesome-icon icon="cog" /></b-button>
+              <b-button size="sm"><font-awesome-icon icon="trash" /></b-button>
+            </b-card-footer>
+          </b-card>
 
         </b-col>
       </b-row>
@@ -56,7 +59,8 @@ import NavBar from '@/components/NavBar';
 
 export default {
   components: {
-    NavBar
+    NavBar,
+    isLoading: true
   },
   data() {
     return {
@@ -76,17 +80,29 @@ export default {
     }
   },
   mounted() {
-    // fetch book list by current scheme
-    const currentScheme = this.$store.getters.getCurrentScheme;
-    if (currentScheme) {
-      // fetch all books
-      console.log('fetch books');
-      this.$store.dispatch('fetchAllBooksBySchemeId', currentScheme.id).then(console.log).catch(console.error);
-    } else {
-      console.error('redirect here');
-      this.$router.push('/scheme');
-      //
-    }
+    this.$store.dispatch('fetchAllBooks')
+      .then(res => {
+        console.log(res);
+        // finish loading
+        this.isLoading = false;
+      })
+      .catch(err => {
+        console.error('redirect here: ');
+        console.error(err);
+        this.$router.push('/scheme');
+      });
+
+    // // fetch book list by current scheme
+    // const currentScheme = this.$store.getters.getCurrentScheme;
+    // if (currentScheme) {
+    //   // fetch all books
+    //   console.log('fetch books');
+    //   // this.$store.dispatch('fetchAllBooksBySchemeId', currentScheme.id).then(console.log).catch(console.error);
+
+    // } else {
+
+    //   //
+    // }
   },
   methods: {
     addNewBook() {
