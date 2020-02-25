@@ -5,12 +5,8 @@ import firestore from '@/api/firebase/firebaseConfig';
 const schemesCollection = firestore.schemesCollection;
 const COLLECTION_NAME = 'book';
 
-// TODO: decide whether snapshot or reference is storing
-const METHOD_SNAPSHOT = 0;
-const METHOD_REFERENCE = 1;
-const storingMethod = METHOD_REFERENCE;
-
 const MSG_NO_SCHEME = 'no scheme';
+const MSG_NO_BOOK = 'no book';
 
 const createNewBook = (bookName) => {
   return {
@@ -22,8 +18,7 @@ const createNewBook = (bookName) => {
 
 export default {
   state: {
-    currentBookReference: null,
-    currentBookSnapshot: null,
+    currentBook: null,
     books: []
   },
   actions: {
@@ -45,7 +40,7 @@ export default {
             dispatch('fetchAllBooksBySchemeId', schemeId).then(
               () => resolve(bookRef)
             );
-          }).catch(reject);
+          }, reject);
         }
       );
     },
@@ -68,7 +63,7 @@ export default {
           schemesCollection.doc(schemeId).collection(COLLECTION_NAME).get().then(bookRef => {
             commit('SAVE_BOOK_LIST', bookRef.docs);
             resolve(bookRef.docs);
-          }).catch(reject);
+          }, reject);
         }
       );
     },
@@ -82,28 +77,32 @@ export default {
           }
 
           schemesCollection.doc(currentScheme.id).collection(COLLECTION_NAME).doc(bookId).get().then(
-            bookRef => {
-              resolve(bookRef.data());
-              commit('SAVE_CURRENT_BOOK', bookRef);
-            }
-          ).catch(
-            reject
-          );
+            snapshot => {
+              console.log('fetchBookById');
+              console.log(snapshot);
+              if (!snapshot) {
+                reject(MSG_NO_BOOK);
+                return;
+              }
+              commit('SAVE_CURRENT_BOOK', snapshot);
+              resolve(snapshot);
+            }, reject);
         });
     },
-    updateBook({commit, getters}, payload) {
-      console.log('updateBook');
+    updateBook({dispatch, getters}, payload) {
       return new Promise((resolve, reject) => {
-        console.log('get current book');
         if (getters.getCurrentBook) {
-          getters.getCurrentBook.save(payload).then(ref => {
-            commit('SAVE_CURRENT_BOOK', ref);
-            resolve(ref);
+          const bookId = getters.getCurrentBook.id;
+          const docRef = schemesCollection.doc(getters.getCurrentScheme.id).collection(COLLECTION_NAME).doc(bookId);
+          docRef.update(payload).then(ref => {
+            // there is nothing return from update
+            // this should be success
+            console.log('updateBook');
+            console.log(ref);
+            dispatch('fetchBookById', bookId).then(resolve, reject);
           }).catch(reject);
         } else {
-          console.log(getters);
-          console.log(getters.getCurrentBook);
-          reject(Error('no book'));
+          reject(Error(MSG_NO_BOOK));
         }
       });
     },
@@ -112,22 +111,14 @@ export default {
   },
   getters: {
     getAllBooks: (state) => state.books,
-    getCurrentBook: (state) => {
-      if (storingMethod === METHOD_SNAPSHOT) {
-        return state.currentBookSnapshot;
-      } else {
-        return state.currentBookReference ? state.currentBookReference.data() : null;
-      }
-    }
+    getCurrentBook: (state) => state.currentBook,
   },
   mutations: {
-    SAVE_CURRENT_BOOK(state, bookReference) {
-      // store the reference
-      this.currentBookReference = bookReference;
-      let snapshot = bookReference.data();
-      snapshot.id = bookReference.id;
-      // store the snapshot
-      this.currentBookSnapshot = snapshot;
+    SAVE_CURRENT_BOOK(state, bookSnapshot) {
+      console.log('mutation save book');
+      console.log(bookSnapshot);
+      console.log(state);
+      state.currentBook = bookSnapshot;
     },
     SAVE_BOOK_LIST(state, bookList) {
       state.books = bookList;

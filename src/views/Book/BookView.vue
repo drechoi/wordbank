@@ -4,7 +4,7 @@
     <b-container>
       <b-container fluid="lg" align="center" class="mt-1 mb-1">
         <b-button-group>
-          <b-button disabled><font-awesome-icon icon="star" /> Achieve</b-button>
+          <b-button><font-awesome-icon icon="star" /> Achieve</b-button>
           <b-button disabled><font-awesome-icon icon="tasks" /> Add a task</b-button>
           <b-button><font-awesome-icon icon="gift" /> make a wish</b-button>
           <b-button :to="`/book/${$route.params.id}/settings`"><font-awesome-icon icon="cog" /> Settings</b-button>
@@ -15,7 +15,7 @@
         <b-col>
           <b-card no-body class="mt-1">
             <b-card-header>
-              <h5><font-awesome-icon icon="info" /> [Book name]</h5>
+              <h5><font-awesome-icon icon="info" /> [MVP] Basic info / Book name</h5>
             </b-card-header>
             <p class="mt-5 mb-5">
               Book Info
@@ -47,7 +47,7 @@
         <b-col>
           <b-card no-body class="mt-1">
             <b-card-header>
-              <b-link><h5><font-awesome-icon icon="tasks" /> Tasks (Coming soon)</h5></b-link>
+              <b-link><h5><font-awesome-icon icon="tasks" /> [TODO] Tasks</h5></b-link>
             </b-card-header>
             <p class="mt-5 mb-5">
               [WIP]

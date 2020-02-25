@@ -1,7 +1,12 @@
 <template>
   <div>
-    <NavBar :pageTitle="title" />
-    <b-container>
+    <NavBar :page-title="title" />
+    <b-container v-if="isLoading">
+      Debug Message: {{ debugMsg }}
+      <b-spinner />
+
+    </b-container>
+    <b-container v-else>
       <slot />
     </b-container>
   </div>
@@ -18,6 +23,14 @@ export default {
     title: {
       type: String,
       default: null,
+    },
+    debugMsg: {
+      type: String,
+      default: null,
+    },
+    isLoading: {
+      type: Boolean,
+      default: false,
     }
   },
   data() {
@@ -25,10 +38,5 @@ export default {
       currentBook: null,
     };
   },
-  // computed: {
-  //   breadcrumbList: function() {
-  //     return this.$route.meta.breadcrumb;
-  //   },
-  // }
 };
 </script>

@@ -38,8 +38,8 @@
             </b-link>
 
             <b-card-footer align="right">
-              <b-button size="sm" :to="`/book/${book.id}`"><font-awesome-icon icon="eye" /></b-button>
-              <b-button size="sm" :to="`/book/${book.id}/settings`"><font-awesome-icon icon="cog" /></b-button>
+              <b-button :to="`/book/${book.id}`" size="sm"><font-awesome-icon icon="eye" /></b-button>
+              <b-button :to="`/book/${book.id}/settings`" size="sm"><font-awesome-icon icon="cog" /></b-button>
               <b-button size="sm"><font-awesome-icon icon="trash" /></b-button>
             </b-card-footer>
           </b-card>
