@@ -1,10 +1,15 @@
 <template>
   <div class="content">
     <b-alert v-model="showLoginError" variant="danger" dismissible>{{ loginError }}</b-alert>
-    <h1>[App name]</h1>
-    <div class="big_logo">[App big icon]</div>
-    [icon] <b-button variant="outline-primary" @click="loginGoogle">Login with Google</b-button>
-    [icon] <b-button variant="outline-primary" @click="loginFacebook">Login with Facebook</b-button>
+    <h1>My Sticker Book</h1>
+    <div class="big_logo"><b-img src="/static/logo.png" alt="icon" /></div>
+    <b-button variant="outline-primary" @click="loginGoogle">
+      <font-awesome-icon :icon="['fab', 'google']" /> Login with Google
+    </b-button>
+    <b-button variant="outline-primary" @click="loginFacebook">
+      <font-awesome-icon :icon="['fab', 'facebook-square']" />
+      Login with Facebook
+    </b-button>
   </div>
 </template>
 

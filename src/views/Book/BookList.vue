@@ -10,25 +10,37 @@
         <b-col>
           <b-card title="Add new book">
             <b-card-text> could go add book page or just a simple name box </b-card-text>
-            <b-button @click="addNewBook">Add</b-button>
+            <b-button @click="addNewBook" size="lg"><font-awesome-icon icon="plus" /> Add</b-button>
+
           </b-card>
         </b-col>
         <b-col v-for="(book, index) in $store.getters.getAllBooks" :key="index">
-          <b-link :to="`/book/${book.id}`">
-            <b-card>
+
+            <b-card no-body>
+              <b-link :to="`/book/${book.id}`">
               <b-card-title>
                 [icon]
                 {{ book.data().name }}
               </b-card-title>
 
-              <b-card-sub-title>123</b-card-sub-title>
+              <b-card-body>
 
-              <b-card-text>
-                total number of ***
-                [small btn] for edit and delete
-              </b-card-text>
+                <b-card-sub-title>123</b-card-sub-title>
+                <b-card-text>
+                  total number of ***
+                  [small btn] for edit and delete
+
+                </b-card-text>
+              </b-card-body>
+              </b-link>
+
+              <b-card-footer align="right">
+                <b-button size="sm"><font-awesome-icon icon="eye" /></b-button>
+                <b-button size="sm"><font-awesome-icon icon="cog" /></b-button>
+                <b-button size="sm"><font-awesome-icon icon="trash" /></b-button>
+              </b-card-footer>
             </b-card>
-          </b-link>
+
         </b-col>
       </b-row>
 

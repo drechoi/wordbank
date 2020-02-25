@@ -1,5 +1,10 @@
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faCoffee, faCamera } from '@fortawesome/free-solid-svg-icons';
+// import { faCoffee, faCamera, faFacebookSquare } from '@fortawesome/free-solid-svg-icons';
+import { fab } from '@fortawesome/free-brands-svg-icons';
+// library.add(faCoffee);
+// library.add(faCamera);
+import { fas } from '@fortawesome/free-solid-svg-icons';
 
-library.add(faCoffee);
-library.add(faCamera);
+library.add(fas);
+library.add(fab);
+// library.add(fab);
