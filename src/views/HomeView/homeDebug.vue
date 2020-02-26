@@ -1,6 +1,8 @@
 <template>
   <div>
     <navBar :page-title="pageTitle" />
+    <a href="whatsapp://send?text=try me" data-action="share/whatsapp/share">Share</a>
+    <b-button @click="testMixin">Mixin Test</b-button>
     <b-container>
       <h3>----- Debug Scheme -----</h3>
       {{ $store.state.scheme }}
@@ -143,7 +145,7 @@ export default {
   data() {
     return {
       pageTitle: '[page title]',
-      listItems: this.$store.state.dummy.someList,
+      listItems: 'this.$store.state.dummy.someList',
       dataDebug: '123213',
       newSchemeName: '',
 
@@ -152,8 +154,8 @@ export default {
     };
   },
   computed: {
-    isLoggedIn() { return this.$store.getters.getCurrentUser !== null; },
-    currentUser() { return this.$store.getters.getCurrentUser; },
+    isLoggedIn() { return 'this.$store.getters.getCurrentUser !== null'; },
+    currentUser() { return 'this.$store.getters.getCurrentUser'; },
     listSchemesName() { return []; }
   },
   methods: {
@@ -174,9 +176,6 @@ export default {
     // this function is called when there is no avaiable scheme
     // that means newly created one should be the default one
     addNewScheme() {
-      console.log('store getter:');
-      console.log(this.$store);
-      console.log(this.$store.getters);
       this.$store.dispatch('createNewScheme',
         {
           owner: this.$store.getters.getCurrentUser,
@@ -189,6 +188,10 @@ export default {
     },
     addDummyBook() {
       this.$store.dispatch('addDummyBook');
+    },
+    testMixin() {
+      this.log('this.greetings');
+      this.alert('hi');
     }
   }
 };

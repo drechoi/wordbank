@@ -1,10 +1,6 @@
 <template>
-  <div>
-    <navBar :page-title="pageTitle" />
-    <b-container v-if="isLoading">
-      <b-spinner label="Loading"/>
-    </b-container>
-    <b-container v-else>
+  <Layout :title="title" :is-loading="isLoading">
+    <b-container>
       [ ... some scheme menu ... ]
       this is book list
       {{ $store.getters.getCurrentScheme }}
@@ -29,8 +25,9 @@
               </b-card-header>
 
               <b-card-body>
-                <b-card-sub-title>123</b-card-sub-title>
+                <b-card-sub-title>{{ book.id }}</b-card-sub-title>
                 <b-card-text>
+
                   total number of ***
                   [small btn] for edit and delete
                 </b-card-text>
@@ -40,7 +37,7 @@
             <b-card-footer align="right">
               <b-button :to="`/book/${book.id}`" size="sm"><font-awesome-icon icon="eye" /></b-button>
               <b-button :to="`/book/${book.id}/settings`" size="sm"><font-awesome-icon icon="cog" /></b-button>
-              <b-button size="sm"><font-awesome-icon icon="trash" /></b-button>
+              <b-button size="sm" @click="showDeleteConfirmation(book.id)"><font-awesome-icon icon="trash" /></b-button>
             </b-card-footer>
           </b-card>
 
@@ -48,73 +45,95 @@
       </b-row>
 
       [add a new book] + [book cards]
-      {{ test }}
       {{ $store.getters.getAllBooks.length }}
     </b-container>
-  </div>
+  </Layout>
 </template>
 
 <script>
 import NavBar from '@/components/NavBar';
+import Layout from '@/components/Layout';
+
+// const UserReject = (msg) => {};
 
 export default {
   components: {
     NavBar,
-    isLoading: true
+    Layout,
   },
   data() {
     return {
-      pageTitle: 'Book List'
+      title: 'Book List',
+      isLoading: false,
     };
   },
   computed: {
-    test() {
-      console.log('test');
-      console.log(this.$store.getters.getAllBooks);
-
-      for (let b in this.$store.getters.getAllBooks) {
-        console.log(b);
-        console.log('b');
-      }
-      return this.$store.getters.getAllBooks.map(a => a.id);
-    }
   },
   mounted() {
-    this.$store.dispatch('fetchAllBooks')
-      .then(res => {
-        console.log(res);
-        // finish loading
-        this.isLoading = false;
-      })
+    this.refreshBookList()
+      .then(this.log('finished refresh without problem'))
       .catch(err => {
-        console.error('redirect here: ');
-        console.error(err);
+        this.error(err);
         this.$router.push('/scheme');
-      });
-
-    // // fetch book list by current scheme
-    // const currentScheme = this.$store.getters.getCurrentScheme;
-    // if (currentScheme) {
-    //   // fetch all books
-    //   console.log('fetch books');
-    //   // this.$store.dispatch('fetchAllBooksBySchemeId', currentScheme.id).then(console.log).catch(console.error);
-
-    // } else {
-
-    //   //
-    // }
+      }).finally(
+        () => { this.isLoading = false; }
+      );
   },
   methods: {
+    refreshBookList() {
+      return this.$store.dispatch('fetchAllBooks');
+    },
     addNewBook() {
+      this.loading = true;
       const payload = {
         schemeId: this.$store.getters.getCurrentScheme.id,
         bookName: 'Dummy'
       };
-      this.$store.dispatch('addNewBook', payload).then(console.log).catch(console.err);
-      // alert('add New book');
+
+      this.$store.dispatch('addNewBook', payload)
+      // .then(Promise.resolve(this.alert(this.message.DONE)))
+        .then(() => this.alert(this.messages.DONE))
+        .then(this.refreshBookList)
+        .catch(this.error)
+        .finally(this.loading = false);
     },
-    visitBook(index) {
-      alert('visit' + index);
+    deleteBook(bookId) {
+      this.isLoading = true;
+
+      // TODO: prompt confirmation message
+      this.confirmDelete()
+        .then(() => this.$store.dispatch('deleteBook', bookId))
+        .then(this.refreshBookList)
+        .then(() => this.alert(this.messages.DONE))
+        .catch(this.error)
+        .finally(() => { this.isLoading = false; });
+    },
+    confirmDelete() {
+      // return () => Promise.reject('User cancelled');
+      return new Promise((resolve, reject) => {
+        reject(Error('User cancelled'));
+      });
+    },
+
+    showDeleteConfirmation(bookId) {
+      this.$bvModal.msgBoxOk('Action completed')
+        .then(value => {
+          this.alert('confirm ' + value);
+        })
+        .catch(err => {
+          // An error occurred
+          this.alert('confirm ' + err);
+        });
+    },
+    promisTest() {
+      Promise.resolve('User resolve')
+        .then(res => this.alert('a' + res))
+        .then(res => this.alert('b' + res))
+        .then(res => Promise.reject(Error('this.confirmDelete')))
+        .then(this.confirmDelete)
+        .then(res => this.alert('a' + res))
+        .catch(err => this.alert(err))
+        .finally(() => this.alert('finally'));
     }
   }
 };

@@ -17,7 +17,8 @@ module.exports = {
     ],
   // required to lint *.vue files
   plugins: [
-  'vue'
+    'vue',
+    'chai-friendly'
   ],
   // add your custom rules here
   rules: {
@@ -30,6 +31,8 @@ module.exports = {
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
     // vue recommand settings
     "vue/name-property-casing": ["error", "PascalCase"],
-    "vue/max-attributes-per-line": ["error", { "singleline": 3, "multiline": { "max": 1, "allowFirstLine": true }, }]
+    "vue/max-attributes-per-line": ["error", { "singleline": 3, "multiline": { "max": 1, "allowFirstLine": true }, }],
+    "no-unused-expressions": 0,
+    "chai-friendly/no-unused-expressions": 2
   }
 }

@@ -5,13 +5,8 @@
 </template>
 
 <script>
-import topNav from '@/components/TopMenu';
-
 export default {
   name: 'App',
-  components: {
-    topNav,
-  },
   data() {
     return {
       appName: this.$appName,

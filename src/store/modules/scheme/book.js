@@ -22,11 +22,12 @@ export default {
     books: []
   },
   actions: {
+    // no longer auto fetch everything.. need to do externally
     addNewBook({getters, dispatch}, payload) {
       // add new book to current scheme
       return new Promise(
         (resolve, reject) => {
-          const currentScheme = getters.getCurrentScheme();
+          const currentScheme = getters.getCurrentScheme;
           if (!currentScheme) {
             reject(Error(MSG_NO_SCHEME));
             return;
@@ -36,11 +37,7 @@ export default {
           const schemeId = currentScheme.id;
           const booksCollection = schemesCollection.doc(schemeId).collection(COLLECTION_NAME);
 
-          booksCollection.add(newBook).then(bookRef => {
-            dispatch('fetchAllBooksBySchemeId', schemeId).then(
-              () => resolve(bookRef)
-            );
-          }, reject);
+          booksCollection.add(newBook).then(resolve, reject);
         }
       );
     },
@@ -106,8 +103,14 @@ export default {
         }
       });
     },
-    u() {},
-    d() {},
+    deleteBook({getters}, bookId) {
+      const docRef = schemesCollection.doc(getters.getCurrentScheme.id).collection(COLLECTION_NAME).doc(bookId);
+      return new Promise((resolve, reject) => {
+        if (!getters.getCurrentScheme) reject(MSG_NO_SCHEME);
+
+        docRef.delete().then(resolve, reject);
+      });
+    }
   },
   getters: {
     getAllBooks: (state) => state.books,

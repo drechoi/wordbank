@@ -80,13 +80,14 @@ export default {
             isDefault: true
           }).then(
           result => {
-            console.log('scheme created');
-            console.log(result);
+            this.alert('Done');
+            this.log('scheme created');
+            this.log(result);
           }
         ).catch(
           err => {
-            alert('error');
-            console.log(err);
+            this.alertError('error');
+            this.log(err);
           }
         );
       }

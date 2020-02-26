@@ -1,13 +1,13 @@
-import Vue from 'vue';
-import Home from '@/views/HomeView';
-import BootstrapVue, { BButton } from 'bootstrap-vue';
-import { shallowMount } from '@vue/test-utils';
+// import Vue from 'vue';
+// import Home from '@/views/HomeView';
+// import BootstrapVue, { BButton } from 'bootstrap-vue';
+// import { shallowMount } from '@vue/test-utils';
 
 // Install the authentication plugin here
-Vue.use(BootstrapVue);
+// Vue.use(BootstrapVue);
 
 describe('Home.vue - Home View', () => {
-  const wrapper = shallowMount(Home);
+  // const wrapper = shallowMount(Home);
   it('should render correct contents', () => {
     // console.debug(wrapper.findAll(BButton).wrappers.filter(w => w.text() === 'Enter')[0]);
     // let buttonEnter = wrapper.findAll(BButton).wrappers.filter(w => w.text() === 'Enter')[0];

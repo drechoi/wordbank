@@ -1,5 +1,5 @@
 <template>
-  <Layout :is-loading="isLoading" title="Settings">
+  <Layout :is-loading="isLoading" title="Settings no more">
     <b-link :to="`/book/${bookId}`">Back</b-link>
     <b-container class="border rounded mt-1">
       <h3>Basic info</h3>
@@ -53,25 +53,20 @@ export default {
   },
   methods: {
     basicInfoSave() {
-      console.log('basic save');
       const payload = {
         name: this.editName
       };
+
       this.$store.dispatch('updateBook', payload).then(res => {
-        this.bsAlert('Saved!');
+        this.alert(this.messages.DONE);
         this.currentBook = {id: res.id, ...res.data()};
         // clear all the inputs.
         this.editName = '';
-      }, console.error);
-    },
-    bsAlert(message, append = false) {
-      this.$bvToast.toast(message, {
-        title: 'Message',
-        autoHideDelay: 1000,
-        appendToast: append
-      });
-    }
+      }, this.error);
 
+      // TODO:
+      // dispatch(updateBook).then(refreshPage).finally(isLoading=false)
+    },
   }
 };
 </script>

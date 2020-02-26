@@ -1,10 +1,12 @@
 <template>
   <div>
     <NavBar :page-title="title" />
-    <b-container v-if="isLoading">
-      Debug Message: {{ debugMsg }}
+    <b-container v-if="isLoading" align="center">
       <b-spinner />
-
+      <p>
+        {{ loadingMessage || DEFAULT_LOADING_MESSAGE }}
+      </p>
+      <p v-if="debugMsg"> Debug Message: {{ debugMsg }} </p>
     </b-container>
     <b-container v-else>
       <slot />
@@ -31,6 +33,10 @@ export default {
     isLoading: {
       type: Boolean,
       default: false,
+    },
+    loadingMessage: {
+      type: String,
+      default: null,
     }
   },
   data() {

@@ -1,15 +1,25 @@
 'use strict'
 // This is the webpack config used for unit tests.
-
+const path = require('path')
 const utils = require('./utils')
 const webpack = require('webpack')
 const merge = require('webpack-merge')
 const baseWebpackConfig = require('./webpack.base.conf')
 
+function resolve (dir) {
+  return path.join(__dirname, '..', dir)
+}
+
 const webpackConfig = merge(baseWebpackConfig, {
   // use inline sourcemap for karma-sourcemap-loader
   module: {
     rules: utils.styleLoaders()
+  },
+  resolve: {
+    alias: {
+      '@1': resolve('test/unit/spec'),
+      '@2': resolve('test/e2e/spec'),
+    }
   },
   devtool: '#inline-source-map',
   resolveLoader: {

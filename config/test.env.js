@@ -1,8 +1,8 @@
 'use strict'
 const merge = require('webpack-merge')
-const prodEnv = require('./prod.env')
+const devEnv = require('./dev.env')
 
-module.exports = merge(prodEnv, {
-  FIREBASE_CONFIG: process.env.FIREBASE_CONFIG,
+module.exports = merge(devEnv, {
+  // FIREBASE_CONFIG: process.env.FIREBASE_CONFIG,
   NODE_ENV: '"testing"'
 })

@@ -2,15 +2,7 @@ import firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
 
-// firebase init goes here
-var config = process.env.FIREBASE_CONFIG;
-
-console.log('firebase config: ');
-console.log(config);
-
-firebase.initializeApp(config);
-
-console.log('fire base init done');
+firebase.initializeApp(process.env.FIREBASE_CONFIG);
 
 // // firebase utils
 const db = firebase.firestore();

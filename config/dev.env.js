@@ -1,9 +1,8 @@
 'use strict'
 const merge = require('webpack-merge')
 const prodEnv = require('./prod.env')
-const firebaseConfig = require('./firebase.json')
 
 module.exports = merge(prodEnv, {
-  FIREBASE_CONFIG: firebaseConfig,
+  FIREBASE_CONFIG: process.env.FIREBASE_CONFIG,
   NODE_ENV: '"dev"'
 })
