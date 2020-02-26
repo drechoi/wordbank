@@ -10,6 +10,9 @@ yarn-error.log*
 selenium-debug.log
 devNotes.txt
 
+# local run test bat file
+*.bat
+
 # Editor directories and files
 .idea
 .vscode
