@@ -5,5 +5,5 @@ const firebaseConfig = require('./firebase.json')
 
 module.exports = merge(prodEnv, {
   FIREBASE_CONFIG: firebaseConfig,
-  NODE_ENV: '"development_"'
+  NODE_ENV: '"dev"'
 })
