@@ -2,14 +2,14 @@
   <div>
     <navBar :page-title="pageTitle" />
     <b-container>
-      <div v-if="$store.state.scheme.currentScheme">
+      <div v-if="currentScheme">
         <h2>[current profile name][setting button]</h2>
         book list
         .. add new book (need to do it in settings? i think not)
-        {{ $store.state.scheme.bookList }}
+        {{ bookList }}
         <b-container>
           <h3>Current Book</h3>
-          {{ $store.state.book.currentBook }}
+          {{ currentBook }}
         </b-container>
       </div>
       <div v-else>
@@ -43,6 +43,9 @@ export default {
     };
   },
   computed: {
+    currentScheme() { return 'this.$store.state.scheme.currentScheme'; },
+    bookList() { return 'this.$store.state.scheme.bookList'; },
+    currentBook() { return 'this.$store.state.book.currentBook'; }
   },
   methods: {
     createScheme() {

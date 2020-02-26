@@ -9,10 +9,10 @@
     "start-dev": "npm run dev",
     "start": "node server.js",
     "unit": "cross-env BABEL_ENV=test karma start test/unit/karma.conf.js --single-run",
-    "unit2": "cross-env BABEL_ENV=test karma start test/unit/karma.conf.js --watch",
+    "unit_watch": "cross-env BABEL_ENV=test karma start test/unit/karma.conf.js --watch",
     "e2e": "node test/e2e/runner.js",
     "test": "npm run unit",
-    "test_local": "npm run unit && npm run e2e",
+    "test_all": "npm run unit && npm run e2e",
     "lint": "eslint --ext .js,.vue src test/unit test/e2e/specs",
     "build": "node build/build.js"
   },
