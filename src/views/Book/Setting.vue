@@ -6,7 +6,7 @@
       <label for="input-name">Name:</label>
       <b-input id="input-name" :placeholder="currentBook?currentBook.name:''" v-model="editName" />
       <b-container fluid align="right">
-        <b-button @click="basicInfoSave"><font-awesome-icon icon="save" /> Save</b-button>
+        <b-button id="btn-save" @click="basicInfoSave"><font-awesome-icon icon="save" /> Save</b-button>
       </b-container>
     </b-container>
     <b-container class="border rounded mt-1">[TODO] Link to external account</b-container>
