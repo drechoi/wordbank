@@ -1,5 +1,5 @@
 <template>
-  <Layout title="Settings" :isLoading="isLoading">
+  <Layout :is-loading="isLoading" title="Settings">
     <b-link :to="`/book/${bookId}`">Back</b-link>
     <b-container class="border rounded mt-1">
       <h3>Basic info</h3>
@@ -23,7 +23,7 @@ export default {
   data() {
     return {
       isLoading: true,
-      debug: "",
+      debug: '',
       bookId: null,
       currentBook: null,
       editName: null
@@ -37,11 +37,11 @@ export default {
     if (!storedCurrentBook || storedCurrentBook.id !== this.bookId) {
       // fetch current book
       this.$store.dispatch('fetchBookById', this.bookId)
-            .then(res => {
+        .then(res => {
           this.currentBook = {id: res.id, bookId: this.bookId, ...res.data()};
           this.isLoading = false;
         })
-        .catch( err => {
+        .catch(err => {
           this.currentBook = err;
           console.error(err);
           alert('TODO redirect');
@@ -53,7 +53,7 @@ export default {
   },
   methods: {
     basicInfoSave() {
-      console.log('basic save')
+      console.log('basic save');
       const payload = {
         name: this.editName
       };
@@ -62,7 +62,6 @@ export default {
         this.currentBook = {id: res.id, ...res.data()};
         // clear all the inputs.
         this.editName = '';
-
       }, console.error);
     },
     bsAlert(message, append = false) {
@@ -70,7 +69,7 @@ export default {
         title: 'Message',
         autoHideDelay: 1000,
         appendToast: append
-      })
+      });
     }
 
   }
