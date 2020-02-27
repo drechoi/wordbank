@@ -7,8 +7,11 @@ const merge = require('webpack-merge')
 const baseWebpackConfig = require('./webpack.base.conf')
 
 function resolve (dir) {
+  console.log('test resolve : ' + path.join(__dirname, '..', dir));
   return path.join(__dirname, '..', dir)
 }
+
+console.log('--- webpack test config ---');
 
 const webpackConfig = merge(baseWebpackConfig, {
   // use inline sourcemap for karma-sourcemap-loader
@@ -16,9 +19,14 @@ const webpackConfig = merge(baseWebpackConfig, {
     rules: utils.styleLoaders()
   },
   resolve: {
+    extensions: ['.js', '.vue', '.json'],
     alias: {
-      '@1': resolve('test/unit/spec'),
-      '@2': resolve('test/e2e/spec'),
+      'vue$': 'vue/dist/vue.esm.js',
+      '@': resolve('src'),
+      'UNIT': resolve('test/unit/specs'),
+      '#': resolve('test/unit/specs'),
+      'E2E': resolve('test/e2e/specs'),
+      '$': resolve('test/e2e/specs'),
     }
   },
   devtool: '#inline-source-map',

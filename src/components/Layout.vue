@@ -4,7 +4,7 @@
     <b-container v-if="isLoading" align="center">
       <b-spinner />
       <p>
-        {{ loadingMessage || DEFAULT_LOADING_MESSAGE }}
+        {{ loadingMessage || messages.DEFAULT_LOADING_MESSAGE }}
       </p>
       <p v-if="debugMsg"> Debug Message: {{ debugMsg }} </p>
     </b-container>

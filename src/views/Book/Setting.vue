@@ -1,12 +1,14 @@
 <template>
-  <Layout :is-loading="isLoading" title="Settings no more">
+  <Layout :is-loading="isLoading" title="Settings">
     <b-link :to="`/book/${bookId}`">Back</b-link>
     <b-container class="border rounded mt-1">
       <h3>Basic info</h3>
       <label for="input-name">Name:</label>
       <b-input id="input-name" :placeholder="currentBook?currentBook.name:''" v-model="editName" />
       <b-container fluid align="right">
-        <b-button id="btn-save" @click="basicInfoSave"><font-awesome-icon icon="save" /> Save</b-button>
+
+        <button id="btn-save-d" @click="basicInfoSave"><font-awesome-icon icon="save" /> Save</button>
+        <b-button id="btn-save" @click.native="basicInfoSave($event)"><font-awesome-icon icon="save" /> Save</b-button>
       </b-container>
     </b-container>
     <b-container class="border rounded mt-1">[TODO] Link to external account</b-container>
@@ -30,29 +32,37 @@ export default {
     };
   },
   mounted() {
-    // verify current book
-    const storedCurrentBook = this.$store.getters.getCurrentBook;
-    this.bookId = this.$route.params.id;
+    this.log('[setting][mounted] start');
 
-    if (!storedCurrentBook || storedCurrentBook.id !== this.bookId) {
-      // fetch current book
-      this.$store.dispatch('fetchBookById', this.bookId)
-        .then(res => {
-          this.currentBook = {id: res.id, bookId: this.bookId, ...res.data()};
+    this.isLoading = true;
+    const storedCurrentBook = this.$store.getters.getCurrentBook;
+    const bookId = this.$route.params.id;
+
+    this.$store.dispatch('fetchBookById', bookId)
+      .then(res => {
+        if(!res) {
+          this.log('[setting][mounted]: no book after fetching DB');
+          return Promise.reject(this.messages.MSG_NO_BOOK)
+        }
+        this.currentBook = { id: res.id, bookId: bookId, ...res.data() };
+        this.log('[setting][mounted] then 2');
+      })
+      .catch(err => {
+        this.error(err, this.messages.FAIL_LOADING);
+        this.$router.push('/');
+      }).finally(
+        () => {
           this.isLoading = false;
-        })
-        .catch(err => {
-          this.currentBook = err;
-          console.error(err);
-          alert('TODO redirect');
-        });
-    } else {
-      this.currentBook = {id: storedCurrentBook.id, ...storedCurrentBook.data()};
-      this.isLoading = false;
-    }
+          this.log('[setting][mounted] resolved');
+        }
+      );
+
+    this.log('[setting][mounted] end');
   },
   methods: {
     basicInfoSave() {
+      this.log('---- basicInfoSave');
+
       const payload = {
         name: this.editName
       };
@@ -67,6 +77,8 @@ export default {
       // TODO:
       // dispatch(updateBook).then(refreshPage).finally(isLoading=false)
     },
+    refreshPage() {
+    }
   }
 };
 </script>

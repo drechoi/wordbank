@@ -1,3 +1,4 @@
+import sinon from 'sinon';
 
 export default {
   state: {
@@ -25,8 +26,10 @@ export default {
 
     },
     updateBook({dispatch, getters}, payload) {
-
+      console.log('updateBook');
+      return Promise.resolve('done');
     },
+    // updateBook: sinon.spy(),
     deleteBook({getters}, bookId) {
 
     }

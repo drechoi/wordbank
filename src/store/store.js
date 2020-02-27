@@ -1,18 +1,16 @@
-import Vue from 'vue';
-import Vuex from 'vuex';
+// import Vue from 'vue';
+// import Vuex from 'vuex';
 
 // vuex modules
 import DummyModule from './modules/dummy';
 import IDBDemo from './modules/idbDemo';
 import profile from './modules/profiles';
 import scheme from './modules/scheme';
-import schemex from './modules/scheme/schemex';
 import book from './modules/scheme/book';
 
-Vue.use(Vuex);
+// Vue.use(Vuex);
 
-export default new Vuex.Store({
-  // plugins: [createLogger()]
+export default {
   modules: {
     // wish: wishModule,
     dummy: DummyModule,
@@ -30,8 +28,7 @@ export default new Vuex.Store({
     },
     auth: profile,
     scheme: scheme,
-    schemex: schemex,
     book: book,
   },
   // strict: process.env.NODE_ENV !== 'production'
-});
+};

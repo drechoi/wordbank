@@ -1,12 +1,10 @@
 // import firebase from 'firebase/app';
 import firestore from '@/api/firebase/firebaseConfig';
+import messages from '@/components/utils/message';
 
 // const booksCollection = firestore.booksCollection;
 const schemesCollection = firestore.schemesCollection;
 const COLLECTION_NAME = 'book';
-
-const MSG_NO_SCHEME = 'no scheme';
-const MSG_NO_BOOK = 'no book';
 
 const createNewBook = (bookName) => {
   return {
@@ -29,7 +27,7 @@ export default {
         (resolve, reject) => {
           const currentScheme = getters.getCurrentScheme;
           if (!currentScheme) {
-            reject(Error(MSG_NO_SCHEME));
+            reject(Error(messages.MSG_NO_SCHEME));
             return;
           }
 
@@ -45,7 +43,7 @@ export default {
       return new Promise((resolve, reject) => {
         const scheme = getters.getCurrentScheme;
         if (!scheme) {
-          reject(Error(MSG_NO_SCHEME));
+          reject(Error(messages.MSG_NO_SCHEME));
           return;
         }
 
@@ -68,8 +66,9 @@ export default {
       return new Promise(
         (resolve, reject) => {
           const currentScheme = getters.getCurrentScheme;
+
           if (!currentScheme) {
-            reject(MSG_NO_SCHEME);
+            reject(Error(messages.MSG_NO_SCHEME));
             return;
           }
 
@@ -78,7 +77,7 @@ export default {
               console.log('fetchBookById');
               console.log(snapshot);
               if (!snapshot) {
-                reject(MSG_NO_BOOK);
+                reject(Error(messages.MSG_NO_BOOK));
                 return;
               }
               commit('SAVE_CURRENT_BOOK', snapshot);
@@ -94,19 +93,21 @@ export default {
           docRef.update(payload).then(ref => {
             // there is nothing return from update
             // this should be success
-            console.log('updateBook');
+            console.log('store: updateBook');
             console.log(ref);
-            dispatch('fetchBookById', bookId).then(resolve, reject);
+            console.log(this.log);
+            resolve('success');
+            // dispatch('fetchBookById', bookId).then(resolve, reject);
           }).catch(reject);
         } else {
-          reject(Error(MSG_NO_BOOK));
+          reject(Error(messages.MSG_NO_BOOK));
         }
       });
     },
     deleteBook({getters}, bookId) {
       const docRef = schemesCollection.doc(getters.getCurrentScheme.id).collection(COLLECTION_NAME).doc(bookId);
       return new Promise((resolve, reject) => {
-        if (!getters.getCurrentScheme) reject(MSG_NO_SCHEME);
+        if (!getters.getCurrentScheme) reject(Error(messages.MSG_NO_SCHEME));
 
         docRef.delete().then(resolve, reject);
       });

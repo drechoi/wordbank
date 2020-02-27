@@ -1,7 +1,14 @@
 {
   "compilerOptions": {
     "target": "ES6",
-    "baseUrl": "."
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"],
+      "UNIT/*": ["test/unit/specs/*"],
+      "#/*": ["test/unit/specs/*"],
+      "E2E/*": ["test/e2e/specs/*"],
+      "$/*": ["test/e2e/specs/*"]
+    }
   },
   "exclude": [
     "node_modules",

@@ -27,17 +27,18 @@ const Mixin = {
     log: function(message) {
       // only for dev or test
       if (process.env.NODE_ENV !== 'production') {
-        console.log(`${process.env.NODE_ENV}: ${message}`);
+        console.log(`${process.env.NODE_ENV} log: ${message}`);
       }
     },
     error: function(err, message = null) {
       if (process.env.NODE_ENV !== 'production') {
         this.alertError(err);
-        console.error(`${process.env.NODE_ENV} error:`);
+        console.error(`${process.env.NODE_ENV} error: ${err}`);
       }
 
-      if (message) this.alertError(message);
-      console.error(err);
+      if (message) {
+        this.alertError(message);
+      }
     },
   }
 };
