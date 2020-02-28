@@ -101,27 +101,36 @@ describe('Book setting page', function() {
     };
 
     // TODO: validate input before call action
-
-    it('action will triggered updateBook action', () => {
-      const spy = sinon.spy();
-      const modules = {book: {actions: {
-        fetchBookById: () => { return Promise.resolve(dummyBook); },
-        updateBook: spy
-      }}};
-
-      const StubBtn = { template: '<button />' };
-
-      const store = new Vuex.Store({modules});
-      const wrapper = shallowMount(BookSettingView, { mocks, store, stubs: { 'b-button': StubBtn }, localVue });
-
-      // await flushPromises();
+    describe('with valid input', function() {
       const dummyTextInput = 'dummyTextInput';
-      wrapper.setData({editName: dummyTextInput});
-      // click
-      wrapper.find(StubBtn).trigger('click');
+      const StubBtn = { template: `<button @click='$listeners.click'></button>` };
 
-      spy.should.have.been.called;
-      expect(spy.getCall(0).args[1]).is.deep.equal({ name: dummyTextInput });
+      beforeEach(function() {
+        // mount page..
+        this.currentTest.spy = sinon.spy();
+        const modules = {book: {actions: {
+          fetchBookById: () => { return Promise.resolve(dummyBook); },
+          updateBook: this.currentTest.spy
+        }}};
+
+        const store = new Vuex.Store({modules});
+        const wrapper = shallowMount(BookSettingView, { mocks, store, stubs: { 'b-button': StubBtn }, localVue });
+        this.currentTest.wrapper = wrapper;
+
+        wrapper.setData({editName: dummyTextInput});
+        // // click
+        wrapper.find(StubBtn).trigger('click');
+      });
+
+      it('action will triggered updateBook action', function() {
+        this.test.spy.should.have.been.called;
+        expect(this.test.spy.getCall(0).args[1]).is.deep.equal({ name: dummyTextInput });
+      });
+
+      it('will reset the input form', async function() {
+        await flushPromises();
+        expect(this.test.wrapper.find('#input-name').props('value')).is.deep.equal('');
+      });
     });
   });
 });

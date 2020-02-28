@@ -8,7 +8,10 @@
       <b-row cols="1" cols-sm="3">
         <b-col>
           <b-card title="Add new book">
-            <b-card-text> could go add book page or just a simple name box </b-card-text>
+            <b-card-text>
+              <label for="input-name">Name:</label>
+              <b-input id="input-name" placeholder="Name" v-model="newBookName" />
+            </b-card-text>
             <b-button size="lg" @click="addNewBook"><font-awesome-icon icon="plus" /> Add</b-button>
 
           </b-card>
@@ -20,16 +23,15 @@
               <b-card-header>
                 <b-card-title>
                   <font-awesome-icon icon="address-book" />
-                  {{ book.data().name }}
+                  {{ book.name }}
                 </b-card-title>
               </b-card-header>
 
               <b-card-body>
                 <b-card-sub-title>{{ book.id }}</b-card-sub-title>
                 <b-card-text>
-
-                  total number of ***
-                  [small btn] for edit and delete
+                  Show basic information
+                  or summary
                 </b-card-text>
               </b-card-body>
             </b-link>
@@ -37,7 +39,7 @@
             <b-card-footer align="right">
               <b-button :to="`/book/${book.id}`" size="sm"><font-awesome-icon icon="eye" /></b-button>
               <b-button :to="`/book/${book.id}/settings`" size="sm"><font-awesome-icon icon="cog" /></b-button>
-              <b-button size="sm" @click="showDeleteConfirmation(book.id)"><font-awesome-icon icon="trash" /></b-button>
+              <b-button size="sm" @click="deleteBook(book)"><font-awesome-icon icon="trash" /></b-button>
             </b-card-footer>
           </b-card>
 
@@ -65,6 +67,7 @@ export default {
     return {
       title: 'Book List',
       isLoading: false,
+      newBookName: '',
     };
   },
   computed: {
@@ -87,53 +90,49 @@ export default {
       this.loading = true;
       const payload = {
         schemeId: this.$store.getters.getCurrentScheme.id,
-        bookName: 'Dummy'
+        bookName: this.newBookName,
       };
 
       this.$store.dispatch('addNewBook', payload)
-      // .then(Promise.resolve(this.alert(this.message.DONE)))
-        .then(() => this.alert(this.messages.DONE))
         .then(this.refreshBookList)
+        .then(() => {
+          // clear input
+          this.newBookName = '';
+          this.alert(this.messages.DONE);
+        })
         .catch(this.error)
         .finally(this.loading = false);
     },
-    deleteBook(bookId) {
-      this.isLoading = true;
-
-      // TODO: prompt confirmation message
-      this.confirmDelete()
-        .then(() => this.$store.dispatch('deleteBook', bookId))
+    deleteBook(book) {
+      const bookId = book.id;
+      this.showDeleteConfirmation(book)
+        .then(() => {
+          this.isLoading = true;
+          return this.$store.dispatch('deleteBook', bookId);
+        })
         .then(this.refreshBookList)
         .then(() => this.alert(this.messages.DONE))
-        .catch(this.error)
+        .catch(this.alert)
         .finally(() => { this.isLoading = false; });
     },
-    confirmDelete() {
-      // return () => Promise.reject('User cancelled');
-      return new Promise((resolve, reject) => {
-        reject(Error('User cancelled'));
-      });
-    },
 
-    showDeleteConfirmation(bookId) {
-      this.$bvModal.msgBoxOk('Action completed')
-        .then(value => {
-          this.alert('confirm ' + value);
-        })
-        .catch(err => {
-          // An error occurred
-          this.alert('confirm ' + err);
-        });
-    },
-    promisTest() {
-      Promise.resolve('User resolve')
-        .then(res => this.alert('a' + res))
-        .then(res => this.alert('b' + res))
-        .then(res => Promise.reject(Error('this.confirmDelete')))
-        .then(this.confirmDelete)
-        .then(res => this.alert('a' + res))
-        .catch(err => this.alert(err))
-        .finally(() => this.alert('finally'));
+    showDeleteConfirmation(book) {
+      return new Promise((resolve, reject) => {
+        this.$bvModal.msgBoxConfirm(`Are you sure to delete ${book.name}?`)
+          .then(value => {
+            // this.alert(`confirm ${value}`);
+            if (value) {
+              resolve();
+            } else {
+              reject('User Cancelled');
+            }
+          })
+          .catch(err => {
+            // An error occurred
+            this.alert('reject ' + err);
+            reject(err);
+          });
+      });
     }
   }
 };

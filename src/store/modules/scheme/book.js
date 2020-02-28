@@ -55,9 +55,11 @@ export default {
     fetchAllBooksBySchemeId({commit}, schemeId) {
       return new Promise(
         (resolve, reject) => {
-          schemesCollection.doc(schemeId).collection(COLLECTION_NAME).get().then(bookRef => {
-            commit('SAVE_BOOK_LIST', bookRef.docs);
-            resolve(bookRef.docs);
+          schemesCollection.doc(schemeId).collection(COLLECTION_NAME).get().then(snapshot => {
+            const bookList = snapshot.docs.map(book => { return {id: book.id, ...book.data()}; });
+            // commit('SAVE_BOOK_LIST', snapshot.docs);
+            commit('SAVE_BOOK_LIST', bookList);
+            resolve(snapshot.docs);
           }, reject);
         }
       );

@@ -6,7 +6,7 @@
       <label for="input-name">Name:</label>
       <b-input id="input-name" :placeholder="currentBook?currentBook.name:''" v-model="editName" />
       <b-container fluid align="right">
-        <b-button id="btn-save" @click.native="basicInfoSave($event)"><font-awesome-icon icon="save" /> Save</b-button>
+        <b-button id="btn-save" @click="basicInfoSave($event)"><font-awesome-icon icon="save" /> Save</b-button>
       </b-container>
     </b-container>
     <b-container class="border rounded mt-1">[TODO] Link to external account</b-container>
@@ -37,16 +37,12 @@ export default {
     const bookId = this.$route.params.id;
     this.log(`[setting][mounted] bookId: ${bookId} `);
 
-    this.$store.dispatch('fetchBookById', bookId)
+    // this.$store.dispatch('fetchBookById', bookId)
+    this.reloadCurrentBook(bookId)
       .then(res => {
-        if (!res) {
-          this.log('[setting][mounted]: no book after fetching DB');
-          return Promise.reject(this.messages.MSG_NO_BOOK);
-        }
-        this.log('[setting][mounted] then');
-        this.currentBook = { id: res.id, ...res.data() };
-      })
-      .catch(err => {
+        this.log(`[setting][mounted] loaded bookl, ${res}`);
+        this.currentBook = res;
+      }).catch(err => {
         this.log(`[setting][mounted] catch, ${err}`);
         this.error(err, this.messages.FAIL_LOADING);
         this.$router.push('/');
@@ -61,23 +57,40 @@ export default {
   },
   methods: {
     basicInfoSave() {
-      this.log('---- basicInfoSave');
+      this.isLoading = true;
+      this.log('[setting][save] - start');
 
       const payload = {
         name: this.editName
       };
 
-      this.$store.dispatch('updateBook', payload).then(res => {
-        this.alert(this.messages.DONE);
-        this.currentBook = {id: res.id, ...res.data()};
-        // clear all the inputs.
-        this.editName = '';
-      }, this.error);
-
-      // TODO:
-      // dispatch(updateBook).then(refreshPage).finally(isLoading=false)
+      this.$store.dispatch('updateBook', payload)
+        .then(res => {
+          this.log(`[setting][update] ${res}`);
+          return this.reloadCurrentBook(this.bookId);
+        }).then((res) => {
+          this.alert(this.messages.DONE);
+          this.currentBook = res;
+          // clear all the inputs.
+          this.editName = '';
+        }).finally(() => {
+          this.isLoading = false;
+          this.log('[setting][save] - resolved');
+        });
     },
-    refreshPage() {
+    reloadCurrentBook(bookId) {
+      return new Promise((resolve, reject) => {
+        this.$store.dispatch('fetchBookById', bookId)
+          .then(res => {
+            if (!res) {
+              this.log('[setting][reload]: no book after fetching DB');
+              reject(this.messages.MSG_NO_BOOK);
+              return;
+            }
+            this.log(`[setting][reload] return book ${res}`);
+            resolve({ id: res.id, ...res.data() });
+          }).catch(reject);
+      });
     }
   }
 };
