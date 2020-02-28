@@ -6,8 +6,6 @@
       <label for="input-name">Name:</label>
       <b-input id="input-name" :placeholder="currentBook?currentBook.name:''" v-model="editName" />
       <b-container fluid align="right">
-
-        <button id="btn-save-d" @click="basicInfoSave"><font-awesome-icon icon="save" /> Save</button>
         <b-button id="btn-save" @click.native="basicInfoSave($event)"><font-awesome-icon icon="save" /> Save</b-button>
       </b-container>
     </b-container>
@@ -35,19 +33,21 @@ export default {
     this.log('[setting][mounted] start');
 
     this.isLoading = true;
-    const storedCurrentBook = this.$store.getters.getCurrentBook;
+    // const storedCurrentBook = this.$store.getters.getCurrentBook;
     const bookId = this.$route.params.id;
+    this.log(`[setting][mounted] bookId: ${bookId} `);
 
     this.$store.dispatch('fetchBookById', bookId)
       .then(res => {
-        if(!res) {
+        if (!res) {
           this.log('[setting][mounted]: no book after fetching DB');
-          return Promise.reject(this.messages.MSG_NO_BOOK)
+          return Promise.reject(this.messages.MSG_NO_BOOK);
         }
-        this.currentBook = { id: res.id, bookId: bookId, ...res.data() };
-        this.log('[setting][mounted] then 2');
+        this.log('[setting][mounted] then');
+        this.currentBook = { id: res.id, ...res.data() };
       })
       .catch(err => {
+        this.log(`[setting][mounted] catch, ${err}`);
         this.error(err, this.messages.FAIL_LOADING);
         this.$router.push('/');
       }).finally(
