@@ -1,4 +1,6 @@
 <template>
+
+
   <div>
     <navBar page-title="123"/>
     <b-container>
@@ -11,7 +13,7 @@
         </b-button-group>
       </b-container>
 
-      <b-row cols="1" cols-sm="2">
+      <b-row cols="1" cols-md="2">
         <b-col>
           <b-card no-body class="mt-1">
             <b-card-header>
@@ -28,8 +30,16 @@
         <b-col>
           <b-card no-body class="mt-1">
             <b-card-header>
-              <b-link><h5><font-awesome-icon icon="star" /> Achievements [MVP]</h5></b-link>
-
+              <b-link>
+                <b-row>
+                  <b-col cols="8">
+                    <h5><font-awesome-icon icon="star" /> Achievements [MVP]</h5>
+                  </b-col>
+                  <b-col cols="4" align="right">
+                    <b-button v-b-modal.modal-new-achievement><font-awesome-icon icon="plus" /> Add</b-button>
+                  </b-col>
+                </b-row>
+              </b-link>
             </b-card-header>
             <p class="mt-5 mb-5">
               [history view]
@@ -91,6 +101,33 @@
       - history
       - settings
     </b-container>
+
+    <!--- modals --->
+    <b-modal id="modal-new-achievement"
+      ref="modal"
+      title="Submit Your Name"
+      @show="ResetAchievementModal"
+      @hidden="ResetAchievementModal"
+      @ok="handleAchievementModalOk"
+    >
+      <form ref="achievementInputForm.nameState" @submit.stop.prevent="handleAddAchievement">
+        <b-form-group
+          :state="nameState"
+          label="Name"
+          label-for="name-input"
+          invalid-feedback="Name is required"
+        >
+          <b-form-input
+            id="name-input"
+            v-model="achievementInputForm.name"
+            :state="achievementInputForm.nameState"
+            required
+          ></b-form-input>
+        </b-form-group>
+      </form>
+    </b-modal>
+
+
   </div>
 </template>
 
@@ -102,6 +139,11 @@ export default {
     navBar,
     bookId: null
   },
+  data() {
+    return {
+      achievementInputForm: {},
+    };
+  },
   mounted() {
     // load the book
     // fetch book?
@@ -109,6 +151,46 @@ export default {
     const bookId = this.$route.params.id;
     console.log(bookId);
   },
+  methods: {
+    achievementFormValidity() {
+      const valid = this.$refs.achievementForm.checkValidity();
+      this.achievementInputForm.nameState = valid;
+      // this.achievementInputForm.formState = valid;
+      return valid;
+    },
+    handleAchievementModalOk(event) {
+      event.preventDefault();
+
+      this.handleAddAchievement();
+
+      // this.$bvModal.msgBoxConfirm(`should be a form`)
+      //   .then(value=>{
+      //     if(value){
+      //       // resolve
+      //     } else {
+      //       // reject
+      //     }
+      //   })
+      //   .catch(this.error);
+    },
+    handleAddAchievement() {
+      if(!this.achievementFormValidity()) {
+        return;
+      };
+
+      setTimeout(
+        () => {
+          this.$bvModal.hide('modal-new-achievement');
+        }, 1000
+      );
+      // this.$nextTick(() => {
+
+      // });
+    },
+    ResetAchievementModal() {
+      this.achievementInputForm = {};
+    }
+  }
 
 };
 </script>
