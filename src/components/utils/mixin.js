@@ -1,6 +1,14 @@
 import message from './message';
+import Layout from '@/components/Layout';
+import CardTemplate from '@/components/common/CardTemplate';
 
 const Mixin = {
+  // register common components
+  // see if it finally have too many components...
+  components: {
+    Layout,
+    CardTemplate,
+  },
   data() {
     return {
       defaultAlertDuration: 3000,

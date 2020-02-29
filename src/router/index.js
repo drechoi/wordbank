@@ -1,6 +1,10 @@
+import Vue from 'vue';
 import Router from 'vue-router';
 import allRoutes from './AllRoutes';
+import store from '@/store/store';
 import firebase from 'firebase/app';
+
+Vue.use(Router);
 
 const router = new Router({
   mode: 'history',
@@ -11,7 +15,12 @@ function getCurrentUser(auth) {
   return new Promise((resolve, reject) => {
     const unsubscribe = auth.onAuthStateChanged(user => {
       unsubscribe();
-      resolve(user);
+      // do fetch user profile
+      if (user) {
+        store.dispatch('fetchUserProfile', user).then(() => { resolve(user); });
+      } else {
+        resolve();
+      };
     }, reject);
   });
 }
@@ -19,7 +28,6 @@ function getCurrentUser(auth) {
 router.beforeEach((to, from, next) => {
   const skipAuth = to.matched.some(x => x.meta.skipAuth);
 
-  // const requiresAuth = to.matched.some(x => x.meta.requiresAuth);
   if (skipAuth) {
     next();
   } else {

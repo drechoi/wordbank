@@ -103,14 +103,14 @@ export default {
         }
       );
     },
-    addSchemeToUserProfile({getters}, scheme) {
+    addSchemeToUserProfile({getters}, schemeId) {
       // TODO: remove this message later
       if (!getters.getUserId) {
         return Promise.reject(Error(messages.MSG_NO_USER));
       }
 
       return usersCollection.doc(getters.getUserId)
-        .update({ schemes: firebase.firestore.FieldValue.arrayUnion(scheme) });
+        .update({ schemes: firebase.firestore.FieldValue.arrayUnion(schemeId) });
     },
     // method for debug only...
     // normally the store will be created once user login

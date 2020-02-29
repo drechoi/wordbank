@@ -1,5 +1,5 @@
-// import Vue from 'vue';
-// import Vuex from 'vuex';
+import Vue from 'vue';
+import Vuex from 'vuex';
 
 // vuex modules
 import DummyModule from './modules/dummy';
@@ -8,9 +8,9 @@ import profile from './modules/profiles';
 import scheme from './modules/scheme';
 import book from './modules/scheme/book';
 
-// Vue.use(Vuex);
+Vue.use(Vuex);
 
-export default {
+const storeOption = {
   modules: {
     // wish: wishModule,
     dummy: DummyModule,
@@ -32,3 +32,7 @@ export default {
   },
   // strict: process.env.NODE_ENV !== 'production'
 };
+
+const store = new Vuex.Store(storeOption);
+
+export default store;

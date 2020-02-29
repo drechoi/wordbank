@@ -4,11 +4,11 @@ import messages from '@/components/utils/message';
 const schemesCollection = firestore.schemesCollection;
 
 function _createNewScheme(owner, schemeName) {
+  if (!owner || schemeName) throw Error('Invalid Scheme');
+
   return {
     owner: owner,
     schemeName: schemeName
-    // subcollection ?
-    // books: []
   };
 };
 
@@ -28,11 +28,12 @@ export default {
     createNewScheme({dispatch, commit}, payload) {
       return new Promise(
         (resolve, reject) => {
-          let newScheme = _createNewScheme(payload.owner, payload.schemeName);
+          const newScheme = _createNewScheme(payload.owner, payload.schemeName);
+
           schemesCollection
             .add(newScheme)
             .then(ref => {
-              dispatch('addSchemeToUserProfile', { id: ref.id, ...ref.data() });
+              dispatch('addSchemeToUserProfile', ref.id);
 
               if (payload.isDefault) {
                 dispatch('updateUserProfileSetDefaultScheme', ref.id)
