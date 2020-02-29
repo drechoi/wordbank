@@ -1,17 +1,23 @@
 <template>
-  <div>
-    <font-awesome-icon v-for="i in 5" :icon="[(i > value) ?  'far' : 'fas', 'star']" :key="i" @mouseover="onItemHover(i)"/>
-  </div>
+  <RatingBar :value="value" @onItemHover="onItemHover" />
 </template>
+
 <script>
+import RatingBar from './RatingBar';
+
 export default {
+  components: {
+    RatingBar
+  },
   props: {
-    value: Number,
+    value: {
+      type: Number,
+      default: 1
+    },
   },
   methods: {
     onItemHover(index) {
-      this.value = index;
-      this.$emit('input', this.value);
+      this.$emit('input', index);
     }
   }
 };
