@@ -105,7 +105,7 @@
     <!--- modals --->
     <b-modal id="modal-new-achievement"
       ref="modal"
-      title="Submit Your Name"
+      title="New achievement"
       @show="ResetAchievementModal"
       @hidden="ResetAchievementModal"
       @ok="handleAchievementModalOk"
@@ -113,17 +113,43 @@
       <form ref="achievementInputForm.nameState" @submit.stop.prevent="handleAddAchievement">
         <b-form-group
           :state="nameState"
-          label="Name"
+          label="Title"
           label-for="name-input"
-          invalid-feedback="Name is required"
+          invalid-feedback="Title is required"
         >
           <b-form-input
             id="name-input"
             v-model="achievementInputForm.name"
             :state="achievementInputForm.nameState"
             required
-          ></b-form-input>
+          />
         </b-form-group>
+        <b-form-group
+          :state="nameState"
+          label="Description"
+          label-for="achievement-input-description"
+          invalid-feedback="Title is required"
+        >
+          <b-form-input
+            id="achievement-input-description"
+            v-model="achievementInputForm.name"
+            :state="achievementInputForm.nameState"
+            required
+          />
+        </b-form-group>
+        <b-form-group
+          label="Date"
+          label-for="achievement-input-datepicker"
+        >
+          <b-form-datepicker id="achievement-input-datepicker" v-model="achievementInputForm.date" class="mb-2"></b-form-datepicker>
+        </b-form-group>
+        <b-form-group
+          label="Rating"
+          label-for="achievement-input-rating"
+        >
+          <RatingBar id="achievement-input-rating" v-model="achievementInputForm.rating"/>
+        </b-form-group>
+
       </form>
     </b-modal>
 
@@ -133,15 +159,19 @@
 
 <script>
 import navBar from '@/components/NavBar';
+import RatingBar from '@/components/common/RatingBarInput';
 
 export default {
   components: {
     navBar,
+    RatingBar,
     bookId: null
   },
   data() {
     return {
-      achievementInputForm: {},
+      achievementInputForm: {
+        // rating: 1,
+      },
     };
   },
   mounted() {
