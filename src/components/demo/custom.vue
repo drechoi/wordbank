@@ -1,6 +1,9 @@
 <template>
   <div>
-    <font-awesome-icon v-for="i in 5" :icon="[(i > value) ?  'far' : 'fas', 'star']" :key="`s${i}`" @mouseover="onHover(i)"/>
+    <font-awesome-icon v-for="i in 5"
+                       :icon="[(i > value) ? 'far' : 'fas', 'star']"
+                       :key="`s${i}`"
+                       @mouseover="onHover(i)"/>
   </div>
 </template>
 
@@ -10,8 +13,8 @@ export default {
     value: Number,
   },
   computed: {
-    dummy(){ return Number.parseInt(this.value) ? Math.min(Math.max(0, Number.parseInt(this.value)),5) : -1; },
-    d2(){ return 5-this.dummy;},
+    dummy() { return Number.parseInt(this.value) ? Math.min(Math.max(0, Number.parseInt(this.value)), 5) : -1; },
+    d2() { return 5 - this.dummy; },
   },
   methods: {
     onHover(index) {

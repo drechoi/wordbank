@@ -1,5 +1,5 @@
 <template>
-  <RatingBar :value="value" @onItemHover="onItemHover" />
+  <RatingBar :value="value" :size="size" @onItemHover="onItemHover" />
 </template>
 
 <script>
@@ -13,6 +13,10 @@ export default {
     value: {
       type: Number,
       required: true
+    },
+    size: {
+      type: String,
+      default: '3x'
     },
   },
   methods: {

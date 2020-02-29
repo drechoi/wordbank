@@ -1,12 +1,9 @@
 <template>
-
-
-  <div>
-    <navBar page-title="123"/>
+  <Layout title="Profile">
     <b-container>
       <b-container fluid="lg" align="center" class="mt-1 mb-1">
         <b-button-group>
-          <b-button><font-awesome-icon icon="star" /> Achieve</b-button>
+          <b-button><font-awesome-icon icon="star" /> Achievements</b-button>
           <b-button disabled><font-awesome-icon icon="tasks" /> Add a task</b-button>
           <b-button><font-awesome-icon icon="gift" /> make a wish</b-button>
           <b-button :to="`/book/${$route.params.id}/settings`"><font-awesome-icon icon="cog" /> Settings</b-button>
@@ -26,6 +23,9 @@
               - owner?
             </p>
           </b-card>
+        </b-col>
+        <b-col>
+          <AchievementsPreview/>
         </b-col>
         <b-col>
           <b-card no-body class="mt-1">
@@ -104,11 +104,11 @@
 
     <!--- modals --->
     <b-modal id="modal-new-achievement"
-      ref="modal"
-      title="New achievement"
-      @show="ResetAchievementModal"
-      @hidden="ResetAchievementModal"
-      @ok="handleAchievementModalOk"
+             ref="modal"
+             title="New achievement"
+             @show="ResetAchievementModal"
+             @hidden="ResetAchievementModal"
+             @ok="handleAchievementModalOk"
     >
       <form ref="achievementInputForm.nameState" @submit.stop.prevent="handleAddAchievement">
         <b-form-group
@@ -141,7 +141,7 @@
           label="Date"
           label-for="achievement-input-datepicker"
         >
-          <b-form-datepicker id="achievement-input-datepicker" v-model="achievementInputForm.date" class="mb-2"></b-form-datepicker>
+          <b-form-datepicker id="achievement-input-datepicker" v-model="achievementInputForm.date" class="mb-2"/>
         </b-form-group>
         <b-form-group
           label="Rating"
@@ -152,20 +152,21 @@
 
       </form>
     </b-modal>
-
-
-  </div>
+  </Layout>
 </template>
 
 <script>
-import navBar from '@/components/NavBar';
+// import navBar from '@/components/NavBar';
+import Layout from '@/components/Layout';
 import RatingBar from '@/components/common/RatingBarInput';
+import AchievementsPreview from './components/AchievementsPreview';
 
 export default {
   components: {
-    navBar,
+    Layout,
     RatingBar,
-    bookId: null
+    bookId: null,
+    AchievementsPreview
   },
   data() {
     return {
@@ -180,6 +181,7 @@ export default {
 
     const bookId = this.$route.params.id;
     console.log(bookId);
+    // if no book id.. do something!
   },
   methods: {
     achievementFormValidity() {
@@ -204,7 +206,7 @@ export default {
       //   .catch(this.error);
     },
     handleAddAchievement() {
-      if(!this.achievementFormValidity()) {
+      if (!this.achievementFormValidity()) {
         return;
       };
 

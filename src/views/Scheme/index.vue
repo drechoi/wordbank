@@ -1,31 +1,19 @@
 <template>
-  <div>
-    <navBar :page-title="pageTitle" />
-    <b-container v-if="redirectCountdown">
-      Will redirect in {{ redirectCountdown }}
-    </b-container>
-    <b-container v-else>
+  <Layout>
+    {{ this.$store.getters.getCurrentScheme }}
+    <b-container>
       {{ $store.getters.getUserProfile }}
-
     </b-container>
-
-    <!-- <b-container>
-      <div>
-        Debug !
-        {{ $store.getters.getCurrentScheme }}
-      </div>
-      [scheme view index (Dummy)!]
-      [list of possible schemes]
-      <b-link :to="'scheme/' + $store.getters.getCurrentScheme.id">Current Scheme</b-link>
-    </b-container> -->
-  </div>
+  </Layout>
 </template>
 
 <script>
 import NavBar from '@/components/NavBar';
+import Layout from '@/components/Layout';
 
 export default {
   components: {
+    Layout,
     NavBar
   },
   data() {

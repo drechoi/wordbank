@@ -29,7 +29,7 @@ export default {
     showLoginError: { get() { return this.loginError !== ''; } }
   },
   mounted() {
-    if (this.$store.getters.getCurrentUser) {
+    if (this.$store.getters.getUserProfile) {
       this.$router.push('/home');
     }
   },

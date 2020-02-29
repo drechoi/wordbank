@@ -39,6 +39,7 @@ export default {
         }
       );
     },
+    // just short hand for fetchAllBooksBySchemeId(currentScheme)
     fetchAllBooks({getters, dispatch}) {
       return new Promise((resolve, reject) => {
         const scheme = getters.getCurrentScheme;

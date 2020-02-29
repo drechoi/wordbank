@@ -15,9 +15,9 @@
         <b-nav-item to="/bookList" active-class="active" exact>All Books</b-nav-item>
         <b-nav-item-dropdown>
           <template v-slot:button-content>
-            <userCard :user="$store.getters.getCurrentUser" style="display: inline-block"/>
+            <userCard :user="$store.getters.getUserProfile" style="display: inline-block"/>
           </template>
-          <b-dropdown-item to="/UserSettings">
+          <b-dropdown-item to="/Profile/Settings">
             <font-awesome-icon icon="cog" />Setting
           </b-dropdown-item>
           <b-dropdown-item @click="logout"><font-awesome-icon icon="sign-out-alt" />Logout</b-dropdown-item>
@@ -48,7 +48,7 @@ export default {
     logout() {
       firebase.auth().signOut().then(() => {
         this.$router.push('/login');
-        this.$store.commit('SET_CURRENT_USER', null);
+        this.$store.dispatch('localLogout');
       }).catch(err => {
         console.log(err);
       });

@@ -61,10 +61,13 @@ export default {
   data() {
     return {
       pageTitle: 'Profile',
-      scheme: {}
+      // here it wont be reactive...
+      scheme: {},
+      isLoading: false,
     };
   },
   mounted() {
+    this.isLoading = true;
     console.log('mounted');
     const schemeId = this.$route.params.id;
     this.$store.dispatch('fetchScheme', schemeId)
@@ -72,11 +75,6 @@ export default {
         res => {
           if (res) {
             this.scheme = res;
-            // next do fetch book list right?
-
-            this.$store.dispatch('fetchAllBooksBySchemeId', schemeId)
-              .then()
-              .catch(console.error);
           } else {
             this.$router.push('/notfound');
           }
@@ -85,6 +83,8 @@ export default {
         console.error('err');
         console.error(err);
         this.$router.push('/error');
+      }).finally(() => {
+        this.isLoading = false;
       });
   }
 };

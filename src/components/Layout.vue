@@ -1,6 +1,6 @@
 <template>
   <div>
-    <NavBar :page-title="title" />
+    <NavBar :page-title="title || this.$appName" />
     <b-container v-if="isLoading" align="center">
       <b-spinner />
       <p>

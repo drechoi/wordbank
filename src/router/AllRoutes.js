@@ -20,7 +20,6 @@ import userSettings from '@/views/Profile/Settings';
 import WordList from '@/views/Profile/WordList';
 
 import DebugView from '@/views/DebugView';
-import LoginD from '@/views/Login/LoginDebug';
 import Login from '@/views/Login';
 
 import ShowData from '@/views/showData';
@@ -106,15 +105,8 @@ export default [
       skipAuth: true
     }
   },
-  { path: '/LoginD',
-    name: 'LoginD',
-    component: LoginD,
-    meta: {
-      skipAuth: true
-    }
-  },
   {
-    path: '/UserSettings',
+    path: '/Profile/Settings',
     name: 'UserSettings',
     component: userSettings,
     meta: {

@@ -5,12 +5,13 @@
       .... some input
       <p>
         Rating Input <RatingInput v-model="modelTest" />
+        Rating Input <RatingInput v-model="modelTest" size="lg" />
       </p>
       <p>
         Rating View <RatingView v-model="modelTest" />
       </p>
       {{ modelTest }}
-      <b-input v-model="modelTest"></b-input>
+      <b-input v-model="modelTest"/>
 
     </b-container>
     <b-container>

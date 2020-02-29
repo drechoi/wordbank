@@ -9,7 +9,7 @@
       <h3>----- Debug Profile -----</h3>
       {{ $store.state.auth }}
       {{ $store.getters }}
-      {{ $store.getters.getCurrentUserId }}
+      {{ $store.getters.getUserId }}
       {{ $store.state.auth.userProfile }}
       <h3>----- End of Debug -----</h3>
     </b-container>
@@ -78,7 +78,7 @@
 
         - scheme setting page?
       </b-container>
-      <userCard :user="$store.getters.getCurrentUser"/>
+      <userCard :user="$store.getters.getUserProfile"/>
     </b-container>
     <hr >
     <div>
@@ -92,7 +92,7 @@
       <b-button @click="fetchScheme">Manual fetch scheme</b-button>
       <p>store: {{ $store.state.auth.currentUser }}</p>
       <p>
-        <userCard :user="$store.getters.getCurrentUser"/>
+        <userCard :user="$store.getters.getUserProfile"/>
       </p>
 
     </div>
@@ -154,8 +154,8 @@ export default {
     };
   },
   computed: {
-    isLoggedIn() { return 'this.$store.getters.getCurrentUser !== null'; },
-    currentUser() { return 'this.$store.getters.getCurrentUser'; },
+    isLoggedIn() { return 'this.$store.getters.getUserProfile !== null'; },
+    currentUser() { return 'this.$store.getters.getUserProfile'; },
     listSchemesName() { return []; }
   },
   methods: {
@@ -178,7 +178,7 @@ export default {
     addNewScheme() {
       this.$store.dispatch('createNewScheme',
         {
-          owner: this.$store.getters.getCurrentUser,
+          owner: this.$store.getters.getUserProfile,
           schemeName: this.newSchemeName,
           isDefault: true
         });

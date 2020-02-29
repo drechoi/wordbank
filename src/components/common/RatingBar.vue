@@ -1,6 +1,10 @@
 <template>
-  <div>
-    <font-awesome-icon v-for="i in 5" :icon="[(i > value) ?  'far' : 'fas', 'star']" :key="i"  @mouseover="$emit('onItemHover', i)"/>
+  <div align="center">
+    <font-awesome-icon v-for="i in 5"
+                       :icon="[(i > value) ? 'far' : 'fas', 'star']"
+                       :key="i"
+                       :size="size"
+                       @mouseover="$emit('onItemHover', i)"/>
   </div>
 </template>
 
@@ -11,6 +15,10 @@ export default {
       type: Number,
       required: true
     },
+    size: {
+      type: String,
+      default: ''
+    }
   },
 };
 </script>

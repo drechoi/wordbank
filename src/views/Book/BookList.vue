@@ -10,7 +10,7 @@
           <b-card title="Add new book">
             <b-card-text>
               <label for="input-name">Name:</label>
-              <b-input id="input-name" placeholder="Name" v-model="newBookName" />
+              <b-input id="input-name" v-model="newBookName" placeholder="Name" />
             </b-card-text>
             <b-button size="lg" @click="addNewBook"><font-awesome-icon icon="plus" /> Add</b-button>
 
@@ -124,7 +124,7 @@ export default {
             if (value) {
               resolve();
             } else {
-              reject('User Cancelled');
+              reject(Error('User Cancelled'));
             }
           })
           .catch(err => {

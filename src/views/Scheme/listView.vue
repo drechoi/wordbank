@@ -75,7 +75,7 @@ export default {
       if (this.newSchemeName) {
         this.$store.dispatch('createNewScheme',
           {
-            owner: this.$store.getters.getCurrentUserId,
+            owner: this.$store.getters.getUserId,
             schemeName: this.newSchemeName,
             isDefault: true
           }).then(
