@@ -3,9 +3,15 @@
     <b-container>
       .... some custom component
       .... some input
-      <Tmp v-model="modelTest"></Tmp>
+      <p>
+        Rating Input <RatingInput v-model="modelTest" />
+      </p>
+      <p>
+        Rating View <RatingView v-model="modelTest" />
+      </p>
       {{ modelTest }}
       <b-input v-model="modelTest"></b-input>
+
     </b-container>
     <b-container>
       This is Home View - Debug 2
@@ -24,11 +30,13 @@
 
 <script>
 import Router from '@/router/AllRoutes';
-import Tmp from '@/components/demo/custom';
+import RatingInput from '@/components/common/RatingBarInput';
+import RatingView from '@/components/common/RatingBar';
 
 export default {
   components: {
-    Tmp
+    RatingInput,
+    RatingView
   },
   data() {
     return {
