@@ -22,9 +22,6 @@ import WordList from '@/views/Profile/WordList';
 import DebugView from '@/views/DebugView';
 import Login from '@/views/Login';
 
-import ShowData from '@/views/showData';
-import UserIndex from '@/views/UserIndex';
-import UserPage from '@/views/User';
 import NotFound from '@/views/NotFound';
 
 export default [
