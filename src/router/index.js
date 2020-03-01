@@ -1,10 +1,8 @@
-import Vue from 'vue';
+// import Vue from 'vue';
 import Router from 'vue-router';
 import allRoutes from './AllRoutes';
 import store from '@/store/store';
 import firebase from 'firebase/app';
-
-Vue.use(Router);
 
 const router = new Router({
   mode: 'history',

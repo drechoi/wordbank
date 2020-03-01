@@ -1,4 +1,3 @@
-import Vue from 'vue';
 import Vuex from 'vuex';
 
 // vuex modules
@@ -7,8 +6,6 @@ import IDBDemo from './modules/idbDemo';
 import profile from './modules/profiles';
 import scheme from './modules/scheme';
 import book from './modules/scheme/book';
-
-Vue.use(Vuex);
 
 const storeOption = {
   modules: {
