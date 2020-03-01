@@ -16,17 +16,11 @@ import customPlugin from '@/components/utils/mixin';
 import '../scss/blackAndWhite.scss';
 import '@/api/icons.js';
 
-// TODO: remove this plug-in..
-import ImageUploader from 'vue-image-upload-resize';
-
 // all plugin here
 Vue.use(BootstrapVue);
 Vue.use(customPlugin);
 Vue.use(VueRouter);
 Vue.use(Vuex);
-
-// TODO: to be remove later
-Vue.use(ImageUploader);
 
 // App config
 Vue.config.productionTip = false;

@@ -28,7 +28,8 @@ import UserPage from '@/views/User';
 import NotFound from '@/views/NotFound';
 
 export default [
-  { path: '/',
+  {
+    path: '/',
     name: 'Root',
     component: DebugView,
     meta: {
@@ -39,9 +40,6 @@ export default [
     path: '/home',
     name: 'Home - Real',
     component: Home,
-    meta: {
-      requiresAuth: true
-    }
   },
   { path: '/HomeDebug',
     name: 'HomeDebug',
@@ -51,25 +49,16 @@ export default [
     path: '/Scheme/all/',
     name: 'SchemeList',
     component: SchemeList,
-    meta: {
-      requiresAuth: true
-    }
   },
   {
     path: '/Scheme/:id',
     name: 'SchemeView',
     component: SchemeView,
-    meta: {
-      requiresAuth: true
-    }
   },
   {
     path: '/Scheme',
     name: 'SchemeIndex',
     component: SchemeIndex,
-    meta: {
-      requiresAuth: true
-    }
   },
   {
     path: '/Book/:id',
@@ -85,20 +74,9 @@ export default [
     path: '/Book/:id/settings',
     name: 'BookSettings',
     component: BookSettings,
-    meta: {
-      // is not that working ... solve it later
-      breadcrumb: [
-        { text: 'Scheme', href: '/Scheme' },
-        { text: 'Book', href: '/Book' },
-        { text: 'Settings', active: true }
-      ]
-    }
   },
-  { path: '/DebugAuth',
-    name: 'DebugAuth',
-    component: DebugView
-  },
-  { path: '/Login',
+  {
+    path: '/Login',
     name: 'Login',
     component: Login,
     meta: {
@@ -109,17 +87,11 @@ export default [
     path: '/Profile/Settings',
     name: 'UserSettings',
     component: userSettings,
-    meta: {
-      requiresAuth: true
-    }
   },
   {
     path: '/profile',
     name: 'profile',
     component: Profile,
-    meta: {
-      requiresAuth: true
-    }
   },
   {
     path: '/wordlist',
@@ -131,11 +103,11 @@ export default [
     name: 'UI Demo',
     component: AllUI
   },
-  {
-    path: '/demo/Store',
-    name: 'Store Demo',
-    component: StoreDemo
-  },
+  // {
+  //   path: '/demo/Store',
+  //   name: 'Store Demo',
+  //   component: StoreDemo
+  // },
   {
     path: '/demo/LocalDBDemo',
     name: 'Local DB Demo',
@@ -146,21 +118,21 @@ export default [
     name: 'Layout Demo',
     component: LayoutDemo
   },
-  {
-    path: '/showData',
-    name: 'showData',
-    component: ShowData
-  },
-  {
-    path: '/user',
-    name: 'User Index',
-    component: UserIndex
-  },
-  {
-    path: '/user/:id',
-    name: 'User Page',
-    component: UserPage
-  },
+  // {
+  //   path: '/showData',
+  //   name: 'showData',
+  //   component: ShowData
+  // },
+  // {
+  //   path: '/user',
+  //   name: 'User Index',
+  //   component: UserIndex
+  // },
+  // {
+  //   path: '/user/:id',
+  //   name: 'User Page',
+  //   component: UserPage
+  // },
   {
     path: '*',
     name: 'Not found',
